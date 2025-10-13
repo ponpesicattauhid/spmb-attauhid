@@ -314,6 +314,15 @@ export const useStudentData = (currentUser: User | null = null) => {
     try {
       const { finalScore, status } = calculateKelulusan(penilaianAnak, penilaianOrtu, mathCorrect, hafalanBenar);
       const finalScoreInt = Math.round(finalScore);
+      
+      // Debug: Log currentUser data
+      console.log('🔍 Current User Data:', {
+        id: currentUser?.id,
+        name: currentUser?.name,
+        username: currentUser?.username,
+        role: currentUser?.role
+      });
+      
       const updatedStudent = {
         ...selectedStudent,
         penilaianAnak,
@@ -323,7 +332,7 @@ export const useStudentData = (currentUser: User | null = null) => {
         nilaiAkhir: finalScoreInt,
         kelulusan: status,
         status: 'SUDAH DIUJI' as const,
-        penguji: currentUser?.name || 'Unknown'
+        penguji: currentUser?.name || currentUser?.username || 'Unknown'
       };
 
       const { error } = await supabase
@@ -336,7 +345,7 @@ export const useStudentData = (currentUser: User | null = null) => {
           nilaiAkhir: finalScoreInt,
           kelulusan: status,
           status: 'SUDAH DIUJI',
-          penguji: currentUser?.name || 'Unknown'
+          penguji: currentUser?.name || currentUser?.username || 'Unknown'
         })
         .eq('noTes', selectedStudent.noTes);
 
@@ -359,7 +368,7 @@ export const useStudentData = (currentUser: User | null = null) => {
                 penilaianAnak,
                 penilaianOrtu,
                 status: 'SUDAH DIUJI',
-                penguji: currentUser?.name || 'Unknown'
+                penguji: currentUser?.name || currentUser?.username || 'Unknown'
               })
               .eq('noTes', selectedStudent.noTes);
 
