@@ -237,8 +237,6 @@ export const rubrikOrtu: Record<string, string> = {
   'Sikap terhadap Ijazah pondok diberikan setelah 1 tahun': '1: menolak; 3: ragu; 5: menerima dan paham tujuan.',
   'Penilaian terhadap Anak': '1: persepsi negatif; 3: netral; 5: objektif dan konstruktif.',
   'Penilaian terhadap orang tua': '1: tidak kooperatif; 3: cukup kooperatif; 5: kooperatif aktif.',
-  'Pekerjaan orang tua': '1: tidak jelas; 3: jelas namun kurang stabil; 5: jelas dan stabil.',
-  'Riwayat Penyakit calon Santri': '1: tidak transparan; 3: cukup transparan; 5: transparan lengkap dan siap tindakan.',
   'Peraturan kredit poin': '1: menolak; 3: menerima sebagian; 5: menerima dan mendukung.'
 };
 
