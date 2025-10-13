@@ -1,0 +1,19 @@
+# Files to ignore during Vercel deployment
+
+# Documentation (not needed in production)
+*.pdf
+README_AUTHENTICATION.md
+README_DEPLOY.md
+README.md
+SUPABASE_SETUP.md
+DEPLOY_VERCEL.md
+QUICK_DEPLOY.md
+
+# Development files
+src/
+components/
+utils/
+data/
+
+# Only dist/ will be deployed
+
