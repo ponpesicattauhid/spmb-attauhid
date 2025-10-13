@@ -22,6 +22,7 @@ export const useStudentData = (currentUser: User | null = null) => {
   const [pekerjaanOrangTua, setPekerjaanOrangTua] = useState<string>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [filterLembaga, setFilterLembaga] = useState<string>('ALL');
+  const [filterStatus, setFilterStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -322,7 +323,7 @@ export const useStudentData = (currentUser: User | null = null) => {
         nilaiAkhir: finalScoreInt,
         kelulusan: status,
         status: 'SUDAH DIUJI' as const,
-        penguji: formData.petugas || userRole || undefined
+        penguji: currentUser?.name || 'Unknown'
       };
 
       const { error } = await supabase
@@ -335,7 +336,7 @@ export const useStudentData = (currentUser: User | null = null) => {
           nilaiAkhir: finalScoreInt,
           kelulusan: status,
           status: 'SUDAH DIUJI',
-          penguji: updatedStudent.penguji
+          penguji: currentUser?.name || 'Unknown'
         })
         .eq('noTes', selectedStudent.noTes);
 
@@ -358,7 +359,7 @@ export const useStudentData = (currentUser: User | null = null) => {
                 penilaianAnak,
                 penilaianOrtu,
                 status: 'SUDAH DIUJI',
-                penguji: updatedStudent.penguji
+                penguji: currentUser?.name || 'Unknown'
               })
               .eq('noTes', selectedStudent.noTes);
 
@@ -477,10 +478,12 @@ export const useStudentData = (currentUser: User | null = null) => {
     pekerjaanOrangTua,
     editingId,
     filterLembaga,
+    filterStatus,
     searchQuery,
     toast,
     isLoading,
     setFilterLembaga,
+    setFilterStatus,
     setSearchQuery,
     showToast,
     hideToast,

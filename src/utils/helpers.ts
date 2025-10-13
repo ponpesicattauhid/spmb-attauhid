@@ -82,6 +82,7 @@ export const getPenilaianByLembaga = (lembagaId: string): PenilaianData => {
 export const getFilteredStudents = (
   students: Student[],
   filterLembaga: string,
+  filterStatus: string,
   searchQuery: string,
   userRole: UserRole
 ): Student[] => {
@@ -89,6 +90,16 @@ export const getFilteredStudents = (
 
   if (filterLembaga !== 'ALL') {
     filtered = filtered.filter(s => s.lembaga === filterLembaga);
+  }
+
+  if (filterStatus !== 'ALL') {
+    if (filterStatus === 'LULUS' || filterStatus === 'TIDAK LULUS') {
+      filtered = filtered.filter(s => s.kelulusan === filterStatus);
+    } else if (filterStatus === 'SUDAH DIUJI') {
+      filtered = filtered.filter(s => s.status === 'SUDAH DIUJI');
+    } else if (filterStatus === 'BELUM DIUJI') {
+      filtered = filtered.filter(s => s.status === 'BELUM DIUJI');
+    }
   }
 
   if (searchQuery) {

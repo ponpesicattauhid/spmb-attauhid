@@ -10,6 +10,7 @@ interface DashboardScreenProps {
   registeredStudents: Student[];
   lembagaData: LembagaData[];
   filterLembaga: string;
+  filterStatus: string;
   searchQuery: string;
   filteredStudents: Student[];
   onLogout: () => void;
@@ -18,6 +19,7 @@ interface DashboardScreenProps {
   onDeleteStudent: (id: string) => void;
   onStartPenilaian: (student: Student) => void;
   onFilterLembagaChange: (value: string) => void;
+  onFilterStatusChange: (value: string) => void;
   onSearchQueryChange: (value: string) => void;
   onOpenAdmin: () => void;
 }
@@ -28,6 +30,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
   // registeredStudents, // not used in this component directly
   lembagaData,
   filterLembaga,
+  filterStatus,
   searchQuery,
   filteredStudents,
   onLogout,
@@ -36,6 +39,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
   onDeleteStudent,
   onStartPenilaian,
   onFilterLembagaChange,
+  onFilterStatusChange,
   onSearchQueryChange,
   onOpenAdmin
 }) => {
@@ -223,6 +227,20 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                 ))}
               </select>
             </div>
+            <div className="w-full md:w-56">
+              <select
+                value={filterStatus}
+                onChange={(e) => onFilterStatusChange(e.target.value)}
+                aria-label="Filter Status"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 transition-all bg-white/50 backdrop-blur-sm font-semibold"
+              >
+                <option value="ALL">📊 Semua Status</option>
+                <option value="BELUM DIUJI">🔴 Belum Diuji</option>
+                <option value="SUDAH DIUJI">🟡 Sudah Diuji</option>
+                <option value="LULUS">🟢 Lulus</option>
+                <option value="TIDAK LULUS">🔴 Tidak Lulus</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -301,6 +319,16 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                                 <span>Cadangan: {student.data.petugasCadangan}</span>
                               </div>
                             )}
+                          </div>
+                        )}
+
+                        {/* Informasi Penguji */}
+                        {student.status === 'SUDAH DIUJI' && student.penguji && (
+                          <div className="mb-3">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <UserCheck className="w-4 h-4 text-blue-600" />
+                              <span className="font-medium">Diuji oleh: <span className="text-blue-600 font-bold">{student.penguji}</span></span>
+                            </div>
                           </div>
                         )}
 

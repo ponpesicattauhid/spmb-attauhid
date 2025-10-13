@@ -38,9 +38,11 @@ const App = () => {
     penilaianOrtu,
     editingId,
     filterLembaga,
+    filterStatus,
     searchQuery,
     toast,
     setFilterLembaga,
+    setFilterStatus,
     setSearchQuery,
     showToast,
     hideToast,
@@ -119,6 +121,7 @@ const App = () => {
   const filteredStudents = getFilteredStudents(
     registeredStudents,
     filterLembaga,
+    filterStatus,
     searchQuery,
     userRole
   );
@@ -160,6 +163,7 @@ const App = () => {
           registeredStudents={registeredStudents}
           lembagaData={lembagaData}
           filterLembaga={filterLembaga}
+          filterStatus={filterStatus}
           searchQuery={searchQuery}
           filteredStudents={filteredStudents}
           onLogout={handleLogout}
@@ -177,6 +181,7 @@ const App = () => {
             setView('penilaian');
           }}
           onFilterLembagaChange={setFilterLembaga}
+          onFilterStatusChange={setFilterStatus}
           onSearchQueryChange={setSearchQuery}
           onOpenAdmin={handleOpenAdmin}
         />
