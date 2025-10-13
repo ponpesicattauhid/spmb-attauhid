@@ -75,7 +75,7 @@ export const exportToExcel = (students: Student[], lembagaData: LembagaData[]) =
 };
 
 // PDF Export Functions
-export const exportToPDF = async (students: Student[], lembagaData: LembagaData[], elementId: string = 'pdf-export-content') => {
+export const exportToPDF = async (students: Student[], lembagaData: LembagaData[]) => {
   try {
     // Create content for PDF
     const pdfContent = document.createElement('div');
@@ -115,7 +115,7 @@ export const exportToPDF = async (students: Student[], lembagaData: LembagaData[
     // Summary statistics
     const totalStudents = students.length;
     const sudahDiuji = students.filter(s => s.status === 'SUDAH DIUJI').length;
-    const belumDiuji = students.filter(s => s.status === 'BELUM DIUJI').length;
+    // const belumDiuji = students.filter(s => s.status === 'BELUM DIUJI').length;
     const lulus = students.filter(s => s.kelulusan === 'LULUS').length;
     const tidakLulus = students.filter(s => s.kelulusan === 'TIDAK LULUS').length;
 
