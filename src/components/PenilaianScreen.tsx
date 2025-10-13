@@ -295,16 +295,16 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           <p className="text-sm text-gray-600 mb-4 font-medium">KKM 70 dengan bobot: Wawancara 30%, Matematika 35%, Hafalan 35%</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="p-5 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg hover-lift">
-              <div className="text-sm text-white/90 font-semibold mb-1">Wawancara</div>
-              <div className="text-3xl font-black text-white">{hasil.breakdown.interview.toFixed(1)}%</div>
+              <div className="text-sm text-white/90 font-semibold mb-1">Wawancara (30%)</div>
+              <div className="text-3xl font-black text-white">{((hasil.breakdown.interview / 100) * 30).toFixed(1)}%</div>
             </div>
             <div className="p-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg hover-lift">
-              <div className="text-sm text-white/90 font-semibold mb-1">Matematika</div>
-              <div className="text-3xl font-black text-white">{hasil.breakdown.math.toFixed(1)}%</div>
+              <div className="text-sm text-white/90 font-semibold mb-1">Matematika (35%)</div>
+              <div className="text-3xl font-black text-white">{((hasil.breakdown.math / 100) * 35).toFixed(1)}%</div>
             </div>
             <div className="p-5 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg hover-lift">
-              <div className="text-sm text-white/90 font-semibold mb-1">Hafalan</div>
-              <div className="text-3xl font-black text-white">{hasil.breakdown.hafalan.toFixed(1)}%</div>
+              <div className="text-sm text-white/90 font-semibold mb-1">Hafalan (35%)</div>
+              <div className="text-3xl font-black text-white">{((hasil.breakdown.hafalan / 100) * 35).toFixed(1)}%</div>
             </div>
           </div>
           <div className={`p-6 rounded-2xl border-4 flex items-center justify-between shadow-xl ${
