@@ -3,13 +3,13 @@ import { supabase, TABLES } from '../lib/supabase';
 
 export type RubricVariant = 'anak' | 'ortu';
 
-interface RubricGuideRow {
-  id: string;
-  variant: RubricVariant;
-  content: string;
-  updatedAt?: string;
-  updatedBy?: string;
-}
+// interface RubricGuideRow {
+//   id: string;
+//   variant: RubricVariant;
+//   content: string;
+//   updatedAt?: string;
+//   updatedBy?: string;
+// }
 
 export function useRubricGuide() {
   const [guides, setGuides] = useState<Record<RubricVariant, string>>({ anak: '', ortu: '' });
@@ -21,14 +21,14 @@ export function useRubricGuide() {
     setError(null);
     try {
       const { data, error } = await supabase
-        .from<RubricGuideRow>(TABLES.RUBRIC_GUIDES)
+        .from(TABLES.RUBRIC_GUIDES)
         .select('*');
 
       if (error) throw error;
 
       const next = { anak: '', ortu: '' } as Record<RubricVariant, string>;
-      (data || []).forEach((row) => {
-        next[row.variant] = row.content || '';
+      (data || []).forEach((row: any) => {
+        next[row.variant as RubricVariant] = row.content || '';
       });
       setGuides(next);
     } catch (e: any) {
@@ -53,7 +53,7 @@ export function useRubricGuide() {
         updatedBy: updatedBy || 'admin'
       };
       const { error } = await supabase
-        .from<RubricGuideRow>(TABLES.RUBRIC_GUIDES)
+        .from(TABLES.RUBRIC_GUIDES)
         .upsert(payload, { onConflict: 'variant' });
       if (error) throw error;
       setGuides((prev) => ({ ...prev, [variant]: content }));
