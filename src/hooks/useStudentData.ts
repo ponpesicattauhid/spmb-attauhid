@@ -18,6 +18,8 @@ export const useStudentData = (currentUser: User | null = null) => {
   const [penilaianOrtu, setPenilaianOrtu] = useState<PenilaianScores>({});
   const [mathCorrect, setMathCorrect] = useState<number>(0);
   const [hafalanBenar, setHafalanBenar] = useState<number>(0);
+  const [riwayatPenyakit, setRiwayatPenyakit] = useState<string>('');
+  const [pekerjaanOrangTua, setPekerjaanOrangTua] = useState<string>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [filterLembaga, setFilterLembaga] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -442,12 +444,22 @@ export const useStudentData = (currentUser: User | null = null) => {
     setHafalanBenar(v);
   };
 
+  const handleRiwayatPenyakitChange = (value: string) => {
+    setRiwayatPenyakit(value);
+  };
+
+  const handlePekerjaanOrangTuaChange = (value: string) => {
+    setPekerjaanOrangTua(value);
+  };
+
   const resetForm = () => {
     setFormData(getInitialFormData());
     setPenilaianAnak({});
     setPenilaianOrtu({});
     setMathCorrect(0);
     setHafalanBenar(0);
+    setRiwayatPenyakit('');
+    setPekerjaanOrangTua('');
     setEditingId(null);
   };
 
@@ -461,6 +473,8 @@ export const useStudentData = (currentUser: User | null = null) => {
     penilaianOrtu,
     mathCorrect,
     hafalanBenar,
+    riwayatPenyakit,
+    pekerjaanOrangTua,
     editingId,
     filterLembaga,
     searchQuery,
@@ -482,6 +496,8 @@ export const useStudentData = (currentUser: User | null = null) => {
     handlePenilaianAnakChange,
     handlePenilaianOrtuChange,
     handleMathCorrectChange,
-    handleHafalanBenarChange
+    handleHafalanBenarChange,
+    handleRiwayatPenyakitChange,
+    handlePekerjaanOrangTuaChange
   };
 };

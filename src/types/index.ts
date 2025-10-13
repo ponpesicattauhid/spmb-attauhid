@@ -70,6 +70,9 @@ export interface Student {
   hafalanBenar?: number; // 0-15
   nilaiAkhir?: number; // 0-100
   kelulusan?: KelulusanStatus;
+  // Text area untuk informasi tambahan
+  riwayatPenyakit?: string;
+  pekerjaanOrangTua?: string;
   createdAt: string;
 }
 

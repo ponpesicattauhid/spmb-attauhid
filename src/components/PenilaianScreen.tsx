@@ -18,6 +18,10 @@ interface PenilaianScreenProps {
   hafalanBenar?: number;
   onMathCorrectChange?: (value: number) => void;
   onHafalanBenarChange?: (value: number) => void;
+  riwayatPenyakit?: string;
+  pekerjaanOrangTua?: string;
+  onRiwayatPenyakitChange?: (value: string) => void;
+  onPekerjaanOrangTuaChange?: (value: string) => void;
 }
 
 const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
@@ -32,7 +36,11 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
   mathCorrect = 0,
   hafalanBenar = 0,
   onMathCorrectChange,
-  onHafalanBenarChange
+  onHafalanBenarChange,
+  riwayatPenyakit = '',
+  pekerjaanOrangTua = '',
+  onRiwayatPenyakitChange,
+  onPekerjaanOrangTuaChange
 }) => {
   const [showGuideAnak, setShowGuideAnak] = useState(false);
   const [showGuideOrtu, setShowGuideOrtu] = useState(false);
@@ -284,6 +292,43 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
               aria-label="Jumlah baris hafalan benar"
             />
             <span className="text-sm text-gray-600 font-medium">dari 15 baris</span>
+          </div>
+        </div>
+
+        {/* Informasi Tambahan */}
+        <div className="glass rounded-3xl shadow-2xl p-4 md:p-6 mb-4 animate-fade-in hover-lift">
+          <h3 className="text-xl font-black text-gray-800 mb-4 flex items-center">
+            <span className="mr-2">📝</span> Informasi Tambahan
+          </h3>
+          
+          {/* Riwayat Penyakit */}
+          <div className="mb-6">
+            <label className="block text-sm font-bold text-gray-700 mb-2">
+              Riwayat Penyakit Calon Santri
+            </label>
+            <textarea
+              value={riwayatPenyakit}
+              onChange={(e) => onRiwayatPenyakitChange?.(e.target.value)}
+              placeholder="Catatan riwayat penyakit, alergi, atau kondisi kesehatan khusus..."
+              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-red-100 focus:border-red-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
+              rows={3}
+              aria-label="Riwayat penyakit calon santri"
+            />
+          </div>
+
+          {/* Pekerjaan Orang Tua */}
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-2">
+              Pekerjaan Orang Tua
+            </label>
+            <textarea
+              value={pekerjaanOrangTua}
+              onChange={(e) => onPekerjaanOrangTuaChange?.(e.target.value)}
+              placeholder="Jabatan, perusahaan, atau bidang pekerjaan orang tua..."
+              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
+              rows={3}
+              aria-label="Pekerjaan orang tua"
+            />
           </div>
         </div>
 

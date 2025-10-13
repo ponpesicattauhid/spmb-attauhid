@@ -97,8 +97,6 @@ export const penilaianSD: PenilaianData = {
     'Kesanggupan mentaati semua aturan sekolah',
     'Penilaian terhadap Anak',
     'Penilaian terhadap orang tua',
-    'Pekerjaan orang tua',
-    'Riwayat Penyakit calon Santri',
     'Peraturan kredit poin'
   ]
 };
@@ -139,9 +137,7 @@ export const penilaianSMP: PenilaianData = {
     'Sikap terhadap Peraturan kredit poin',
     'Sikap terhadap SPP paling lambat tgl 10',
     'Penilaian terhadap Anak',
-    'Penilaian terhadap orang tua',
-    'Riwayat Penyakit calon Santri',
-    'Pekerjaan orang tua'
+    'Penilaian terhadap orang tua'
   ]
 };
 
@@ -182,9 +178,7 @@ export const penilaianSMA: PenilaianData = {
     'Sikap terhadap Peraturan Pengabdian santri',
     'Sikap terhadap Ijazah pondok diberikan setelah 1 tahun',
     'Penilaian terhadap Anak',
-    'Penilaian terhadap orang tua',
-    'Riwayat Penyakit calon Santri',
-    'Pekerjaan orang tua'
+    'Penilaian terhadap orang tua'
   ]
 };
 
