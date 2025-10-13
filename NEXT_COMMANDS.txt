@@ -1,0 +1,113 @@
+================================================================================
+                    📋 COPY-PASTE COMMANDS - SIAP PAKAI
+================================================================================
+
+STEP 1: Buat GitHub Repository
+────────────────────────────────────────────────────────────
+Buka browser: https://github.com/new
+
+Isi form:
+  - Repository name: spmb-attauhid
+  - Description: SPMB Pondok Pesantren IC At Tauhid
+  - Visibility: Private (atau Public)
+  - ❌ JANGAN centang "Add README" atau "Add .gitignore"
+
+Klik: Create repository
+
+
+STEP 2: Push ke GitHub
+────────────────────────────────────────────────────────────
+⚠️ GANTI "YOUR_USERNAME" dengan username GitHub Anda!
+
+Copy-paste command ini ke terminal:
+
+git remote add origin https://github.com/YOUR_USERNAME/spmb-attauhid.git
+git push -u origin main
+
+
+STEP 3: Setup Supabase
+────────────────────────────────────────────────────────────
+1. Buka: https://app.supabase.com/
+2. Klik: New project
+3. Isi:
+   - Name: spmb-attauhid
+   - Database Password: (buat password kuat)
+   - Region: Southeast Asia (Singapore)
+4. Tunggu project selesai (~2 menit)
+5. Buka: SQL Editor
+6. Copy-paste isi file: supabase-schema.sql
+7. Klik: Run (atau F5)
+
+
+STEP 4: Dapatkan Supabase Credentials
+────────────────────────────────────────────────────────────
+Di Supabase Dashboard:
+1. Settings → API
+2. Copy 2 nilai ini (simpan di notepad):
+   
+   ✅ Project URL (contoh: https://xxxxx.supabase.co)
+   ✅ anon/public key (contoh: eyJhbGci...)
+
+
+STEP 5: Deploy ke Vercel
+────────────────────────────────────────────────────────────
+1. Buka: https://vercel.com
+2. Login dengan GitHub
+3. Klik: Add New... → Project
+4. Import: spmb-attauhid
+5. Set Environment Variables (3 variabel):
+
+   Name: VITE_SUPABASE_URL
+   Value: (paste URL dari step 4)
+
+   Name: VITE_SUPABASE_ANON_KEY
+   Value: (paste key dari step 4)
+
+   Name: VITE_TAHUN_AJARAN
+   Value: 2627
+
+6. Klik: Deploy
+
+
+STEP 6: Test Aplikasi
+────────────────────────────────────────────────────────────
+URL: https://spmb-attauhid.vercel.app
+
+Test:
+  ✅ Login TU
+  ✅ Tambah murid
+  ✅ Download PDF
+  ✅ Kirim WhatsApp
+  ✅ Login Penguji
+  ✅ Beri penilaian
+
+================================================================================
+
+⚡ ALTERNATIF: Deploy via CLI (Untuk Developer)
+────────────────────────────────────────────────────────────
+
+npm install -g vercel
+vercel login
+vercel
+vercel env add VITE_SUPABASE_URL
+vercel env add VITE_SUPABASE_ANON_KEY
+vercel env add VITE_TAHUN_AJARAN
+vercel --prod
+
+================================================================================
+
+🔄 Update Setelah Deploy (Auto-deploy aktif!)
+────────────────────────────────────────────────────────────
+
+git add .
+git commit -m "Deskripsi perubahan"
+git push
+
+Vercel otomatis deploy! 🎉
+
+================================================================================
+
+📖 Baca dokumentasi lengkap: START_HERE.md
+
+================================================================================
+
