@@ -43,8 +43,8 @@ const App = () => {
   const filteredStudents = getFilteredStudents(
     registeredStudents,
     filterLembaga,
-    searchQuery,
-    userRole
+    'ALL', // filterStatus default
+    searchQuery
   );
 
   // Login Screen

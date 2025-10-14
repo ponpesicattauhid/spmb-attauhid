@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LogOut, School, Calendar, FileText, Edit, Trash2, UserCheck, Eye, ClipboardList, Search, Settings, User as UserIcon, MessageCircle } from 'lucide-react';
 import { UserRole, Student, LembagaData, User } from '../types';
 import { downloadKartuPeserta, sendViaWhatsApp } from '../utils/pdfGenerator';
+import { exportStudentToPDF } from '../utils/exportUtils';
+import { getTahunAjaranFromDatabase, updateStudentNoTesToCurrentYear } from '../utils/helpers';
+import ExportButtons from './ExportButtons';
 import { supabase } from '../lib/supabase';
 
 interface DashboardScreenProps {
@@ -43,6 +46,54 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
   onSearchQueryChange,
   onOpenAdmin
 }) => {
+  const [tahunAjaranFromDB, setTahunAjaranFromDB] = useState<string>('');
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  // Load tahun ajaran dari database saat pertama kali
+  useEffect(() => {
+    const loadTahunAjaran = async () => {
+      try {
+        const taFromDB = await getTahunAjaranFromDatabase();
+        if (taFromDB) {
+          setTahunAjaranFromDB(taFromDB);
+          // Sync ke localStorage jika belum ada
+          if (!localStorage.getItem('tahunAjaran')) {
+            localStorage.setItem('tahunAjaran', taFromDB);
+          }
+        }
+      } catch (error) {
+        console.warn('Error loading tahun ajaran from database:', error);
+      }
+    };
+
+    loadTahunAjaran();
+  }, []);
+
+  // Fungsi untuk sync nomor tes siswa dengan tahun ajaran aktif
+  const handleSyncTahunAjaran = async () => {
+    if (isSyncing) return;
+    
+    setIsSyncing(true);
+    try {
+      const result = await updateStudentNoTesToCurrentYear();
+      
+      if (result.success) {
+        if (result.updated > 0) {
+          alert(`✅ ${result.message}\n\nHalaman akan di-reload untuk menampilkan perubahan.`);
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          alert(`ℹ️ ${result.message}`);
+        }
+      } else {
+        alert(`❌ ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Error syncing tahun ajaran:', error);
+      alert('❌ Terjadi kesalahan saat sinkronisasi');
+    } finally {
+      setIsSyncing(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-500 via-teal-400 to-blue-500 relative overflow-hidden">
       {/* Animated background */}
@@ -82,7 +133,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                   type="text"
                   inputMode="numeric"
                   pattern="\\d{4}"
-                  defaultValue={(typeof window !== 'undefined' && window.localStorage.getItem('tahunAjaran')) || ''}
+                  defaultValue={tahunAjaranFromDB || (typeof window !== 'undefined' && window.localStorage.getItem('tahunAjaran')) || ''}
                   onBlur={async (e) => {
                     const v = e.currentTarget.value.trim();
                     if (/^\d{4}$/.test(v)) {
@@ -94,11 +145,12 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                           .from('app_settings')
                           .upsert({ key: 'tahun_ajaran', value: v });
                         
-                        if (error) {
-                          console.warn('Gagal menyimpan Tahun Ajaran ke database:', error);
+                      if (error) {
+                        console.warn('Gagal menyimpan Tahun Ajaran ke database:', error);
                       // Toast disediakan dari App; opsional untuk production build
                         } else {
-                          // noop
+                          // Update state setelah berhasil save
+                          setTahunAjaranFromDB(v);
                         }
                       } catch (err) {
                         console.warn('Error saving tahun ajaran to Supabase:', err);
@@ -113,6 +165,14 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                   className="w-20 px-2 py-1 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-100 focus:border-emerald-400 text-sm"
                   title="Format 4 digit, mis. 2627"
                 />
+                <button
+                  onClick={handleSyncTahunAjaran}
+                  disabled={isSyncing}
+                  className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Sync nomor tes siswa dengan tahun ajaran aktif"
+                >
+                  {isSyncing ? '⏳' : '🔄'} Sync
+                </button>
               </div>
             )}
               {currentUser?.role === 'ADMIN' && (
@@ -244,11 +304,15 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
           </div>
         </div>
 
-        {/* Students List */}
+        {/* Students List & Bulk Export */}
         <div className="glass rounded-2xl shadow-xl p-4 md:p-6 animate-fade-in">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent mb-6">
             {userRole === 'PENGUJI' ? '📅 Jadwal Tes Hari Ini' : '📋 Daftar Calon Siswa'}
           </h2>
+          {/* Bulk export buttons (visible when data tersedia) */}
+          <div className="flex justify-end mb-4">
+            <ExportButtons students={filteredStudents} lembagaData={lembagaData} />
+          </div>
           
           {filteredStudents.length === 0 ? (
             <div className="text-center py-16 animate-scale-in">
@@ -370,6 +434,17 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                             </button>
                           )}
                           {/* Aksi Kartu: Download PDF & Kirim WhatsApp */}
+                          {student.status === 'SUDAH DIUJI' && (
+                            <button
+                              onClick={async () => { await exportStudentToPDF(student, lembagaData); }}
+                              className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg hover:shadow-lg transition-all transform hover:scale-105 text-sm font-semibold"
+                              aria-label="Download Hasil Tes PDF"
+                              title="Export Hasil Tes PDF"
+                            >
+                              <FileText className="w-4 h-4" />
+                              Hasil PDF
+                            </button>
+                          )}
                           <button
                             onClick={() => downloadKartuPeserta(student)}
                             className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-lg hover:shadow-lg transition-all transform hover:scale-105 text-sm font-semibold"

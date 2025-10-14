@@ -1,11 +1,13 @@
-import { Student, PenilaianData, UserRole, PenilaianScores, KelulusanStatus } from '../types';
+import { Student, PenilaianData, PenilaianScores, KelulusanStatus } from '../types';
 import { penilaianSD, penilaianSMP, penilaianSMA } from '../data/constants';
+import { supabase } from '../lib/supabase';
 
 // Fungsi untuk mendapatkan tahun ajaran (format: 2627)
 // Bisa dioverride via:
 // - localStorage: tahunAjaran (di-set dari Dashboard TU)
+// - database: app_settings (tahun_ajaran)
 // - env: VITE_TAHUN_AJARAN=2627
-const getTahunAjaran = (): string => {
+export const getTahunAjaran = (): string => {
   // Env override (mis. untuk memaksa 2627 pada transisi tahun)
   const envTa = (import.meta as any)?.env?.VITE_TAHUN_AJARAN as string | undefined;
   // LocalStorage override (prioritas lebih tinggi karena dikontrol via UI)
@@ -26,6 +28,132 @@ const getTahunAjaran = (): string => {
   const tahunMulaiStr = tahunMulai.toString().slice(-2);
   const tahunAkhirStr = tahunAkhir.toString().slice(-2);
   return `${tahunMulaiStr}${tahunAkhirStr}`;
+};
+
+// Fungsi untuk update nomor tes siswa agar sesuai dengan tahun ajaran yang aktif
+export const updateStudentNoTesToCurrentYear = async (): Promise<{ success: boolean; message: string; updated: number }> => {
+  try {
+    const currentTahunAjaran = getTahunAjaran();
+    
+    // Get all students
+    const { data: students, error: fetchError } = await supabase
+      .from('students')
+      .select('id, noTes');
+    
+    if (fetchError) {
+      return { success: false, message: 'Gagal mengambil data siswa', updated: 0 };
+    }
+    
+    if (!students || students.length === 0) {
+      return { success: true, message: 'Tidak ada data siswa', updated: 0 };
+    }
+    
+    // Filter siswa yang perlu diupdate (nomor tes tidak sesuai dengan tahun ajaran aktif)
+    const studentsToUpdate = students.filter(student => {
+      const parsedTA = parseTahunAjaranFromNoTes(student.noTes);
+      return parsedTA && parsedTA !== currentTahunAjaran;
+    });
+    
+    if (studentsToUpdate.length === 0) {
+      return { success: true, message: 'Semua nomor tes sudah sesuai', updated: 0 };
+    }
+    
+    // Update nomor tes untuk setiap siswa
+    let updatedCount = 0;
+    for (const student of studentsToUpdate) {
+      const newNoTes = student.noTes.replace(/\d{4}/, currentTahunAjaran);
+      
+      const { error: updateError } = await supabase
+        .from('students')
+        .update({ noTes: newNoTes })
+        .eq('id', student.id);
+      
+      if (!updateError) {
+        updatedCount++;
+      }
+    }
+    
+    return { 
+      success: true, 
+      message: `Berhasil update ${updatedCount} dari ${studentsToUpdate.length} siswa`, 
+      updated: updatedCount 
+    };
+    
+  } catch (error) {
+    console.error('Error updating student noTes:', error);
+    return { success: false, message: 'Terjadi kesalahan saat update', updated: 0 };
+  }
+};
+
+// Fungsi async untuk mendapatkan tahun ajaran dari database
+export const getTahunAjaranFromDatabase = async (): Promise<string | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'tahun_ajaran')
+      .single();
+    
+    if (error) {
+      console.warn('Gagal load tahun ajaran dari database:', error);
+      return null;
+    }
+    
+    const value = data?.value;
+    if (/^\d{4}$/.test(value)) {
+      return value;
+    }
+    
+    return null;
+  } catch (error) {
+    console.warn('Error loading tahun ajaran from database:', error);
+    return null;
+  }
+};
+
+// Parse tahun ajaran (empat digit, mis. 2627) dari noTes format PREFIX-TA-NNN atau TA-NNN atau TANNN
+export const parseTahunAjaranFromNoTes = (noTes: string): string | null => {
+  try {
+    const clean = (noTes || '').trim();
+    if (!clean) return null;
+    
+    // Format 1: PREFIX-TA-NNN (e.g., SD-2627-001)
+    const parts = clean.split('-');
+    if (parts.length === 3 && /^\d{4}$/.test(parts[1])) {
+      return parts[1];
+    }
+    
+    // Format 2: TA-NNN (e.g., 2627-001)
+    if (parts.length === 2 && /^\d{4}$/.test(parts[0])) {
+      return parts[0];
+    }
+    
+    // Format 3: TANNN (e.g., 2627001) - ambil 4 digit pertama
+    if (/^\d{4,}/.test(clean)) {
+      const ta = clean.slice(0, 4);
+      // Validasi tahun ajaran masuk akal (20xx/20xx)
+      const start = parseInt(ta.slice(0, 2), 10);
+      const end = parseInt(ta.slice(2, 4), 10);
+      if (start >= 20 && start <= 99 && end === start + 1) {
+        return ta;
+      }
+    }
+    
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+// Format tahun ajaran empat digit (2627) menjadi 2026/2027
+export const formatTahunAjaranDisplay = (ta: string): string => {
+  const safe = (ta || '').trim();
+  if (!/^\d{4}$/.test(safe)) {
+    return safe;
+  }
+  const start = parseInt(safe.slice(0, 2), 10);
+  const end = parseInt(safe.slice(2, 4), 10);
+  return `20${start}/20${end}`;
 };
 
 export const generateNoTes = (lembagaId: string, registeredStudents: Student[]): string => {
@@ -83,8 +211,7 @@ export const getFilteredStudents = (
   students: Student[],
   filterLembaga: string,
   filterStatus: string,
-  searchQuery: string,
-  userRole: UserRole
+  searchQuery: string
 ): Student[] => {
   let filtered = students;
 
@@ -110,10 +237,8 @@ export const getFilteredStudents = (
     );
   }
 
-  if (userRole === 'PENGUJI') {
-    const today = new Date().toISOString().split('T')[0];
-    filtered = filtered.filter(s => s.data.tanggalTes === today);
-  }
+  // PENGUJI sekarang melihat semua siswa (sama seperti TU/Admin)
+  // Filter tanggal dihapus agar konsisten dengan role lain
 
   return filtered;
 };

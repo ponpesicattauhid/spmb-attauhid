@@ -122,8 +122,7 @@ const App = () => {
     registeredStudents,
     filterLembaga,
     filterStatus,
-    searchQuery,
-    userRole
+    searchQuery
   );
 
   // Show loading saat check session
