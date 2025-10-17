@@ -206,53 +206,38 @@ export const sendViaWhatsApp = (student: Student) => {
   
   const jamTes = student.data.jamTes + ' WIB';
   
-  // Get alamat
+  // Get lembaga info
   const lembaga = lembagaData.find(l => l.id === student.lembaga);
-  const lokasiInfo = lembaga?.address 
-    ? `
-
-📍 *LOKASI TES*
-🏢 ${lembaga.address.building}
-🗺 ${lembaga.address.street}
-🧭 ${lembaga.address.mapsUrl}`
-    : '';
   
-  // Pesan WhatsApp
+  // Pesan WhatsApp (dipersingkat agar tidak melebihi URL limit)
   const message = `*KARTU PESERTA TES*
 *SPMB Ponpes IC At Tauhid*
 
-Assalamu'alaikum Warahmatullahi Wabarakatuh
+Assalamu'alaikum Wr. Wb.
+Yth. Bpk/Ibu ${student.data.namaOrangTua}
 
-Kepada Yth. Bapak/Ibu ${student.data.namaOrangTua}
+📋 *NO. TES: ${student.noTes}*
 
-Berikut informasi jadwal tes untuk calon murid:
-
-📋 *NOMOR TES*
-${student.noTes}
-
-👤 *DATA CALON MURID*
-Nama: ${student.data.namaSiswa}
-Tempat, Tgl Lahir: ${student.data.tempatLahir}, ${new Date(student.data.tanggalLahir).toLocaleDateString('id-ID')}
-Jenis Kelamin: ${student.data.jenisKelamin}
+👤 *CALON MURID*
+${student.data.namaSiswa}
+${student.data.jenisKelamin}
 
 📅 *JADWAL TES*
-Tanggal: ${tanggalTes}
+${tanggalTes}
 Jam: ${jamTes}
-Tempat: ${lembaga?.fullName || student.lembagaName}${lokasiInfo}
+Tempat: ${lembaga?.fullName || student.lembagaName}
 
-📝 *TUGAS TES*
-  - HAFALKAN QS. AN NAJM AYAT 1-15
-  - TES MATEMATIKA DASAR
-  - Wawancara dengan orang tua/wali
+📝 *TUGAS TES:*
+• Hafalkan QS. An Najm ayat 1-15
+• Tes Matematika Dasar
+• Wawancara dengan orang tua/wali
 
-📌 *CATATAN PENTING:*
-  - Harap datang 15 menit sebelum jadwal tes
-  - Membawa alat tulis
-  - Berpakaian rapi dan sopan
-  - Simpan nomor tes ini dengan baik
+📌 *WAJIB DIBAWA:*
+• Alat tulis
+• Datang 15 menit lebih awal
 
-  Jazakumullahu khairan
-  _Panitia SPMB Ponpes IC At Tauhid_`;
+Jazakumullahu khairan
+_Panitia SPMB_`;
   
   // Encode message untuk URL
   const encodedMessage = encodeURIComponent(message);
