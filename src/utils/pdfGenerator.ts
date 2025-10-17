@@ -196,50 +196,39 @@ export const sendViaWhatsApp = (student: Student) => {
     return;
   }
   
-  // Format tanggal dan jam
-  const tanggalTes = new Date(student.data.tanggalTes).toLocaleDateString('id-ID', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-  
-  const jamTes = student.data.jamTes + ' WIB';
-  
   // Get lembaga info
   const lembaga = lembagaData.find(l => l.id === student.lembaga);
   
-  // Maps link (singkat)
-  const mapsLink = lembaga?.address?.mapsUrl ? `\n\n📍 *LOKASI:* ${lembaga.address.mapsUrl}` : '';
+  // Format tanggal singkat
+  const tglSingkat = new Date(student.data.tanggalTes).toLocaleDateString('id-ID', { 
+    day: 'numeric', 
+    month: 'short', 
+    year: 'numeric' 
+  });
   
-  // Pesan WhatsApp (dipersingkat agar tidak melebihi URL limit)
-  const message = `*KARTU PESERTA TES*
-*SPMB Ponpes IC At Tauhid*
+  // Maps link
+  const mapsLink = lembaga?.address?.mapsUrl ? `\n📍 ${lembaga.address.mapsUrl}` : '';
+  
+  // Pesan WhatsApp (sangat dipersingkat untuk menghindari URL limit)
+  const message = `*KARTU PESERTA TES SPMB*
+Ponpes IC At Tauhid
 
-Assalamu'alaikum Wr. Wb.
-Yth. Bpk/Ibu ${student.data.namaOrangTua}
+Yth. ${student.data.namaOrangTua}
 
-📋 *NO. TES: ${student.noTes}*
+*NO TES: ${student.noTes}*
+Nama: ${student.data.namaSiswa}
 
-👤 *CALON MURID*
-${student.data.namaSiswa}
-${student.data.jenisKelamin}
-
-📅 *JADWAL TES*
-${tanggalTes}
-Jam: ${jamTes}
+*JADWAL:*
+${tglSingkat}, ${student.data.jamTes} WIB
 Tempat: ${lembaga?.fullName || student.lembagaName}${mapsLink}
 
-📝 *TUGAS TES:*
-• Hafalkan QS. An Najm ayat 1-15
+*TUGAS TES:*
+• Hafal QS An Najm 1-15
 • Tes Matematika Dasar
-• Wawancara dengan orang tua/wali
+• Wawancara ortu/wali
 
-📌 *WAJIB DIBAWA:*
-• Alat tulis
-• Datang 15 menit lebih awal
+*BAWA:* Alat tulis, datang 15 menit lebih awal
 
-Jazakumullahu khairan
 _Panitia SPMB_`;
   
   // Encode message untuk URL
