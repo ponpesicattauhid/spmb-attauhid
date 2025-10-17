@@ -209,6 +209,9 @@ export const sendViaWhatsApp = (student: Student) => {
   // Get lembaga info
   const lembaga = lembagaData.find(l => l.id === student.lembaga);
   
+  // Maps link (singkat)
+  const mapsLink = lembaga?.address?.mapsUrl ? `\n\n📍 *LOKASI:* ${lembaga.address.mapsUrl}` : '';
+  
   // Pesan WhatsApp (dipersingkat agar tidak melebihi URL limit)
   const message = `*KARTU PESERTA TES*
 *SPMB Ponpes IC At Tauhid*
@@ -225,7 +228,7 @@ ${student.data.jenisKelamin}
 📅 *JADWAL TES*
 ${tanggalTes}
 Jam: ${jamTes}
-Tempat: ${lembaga?.fullName || student.lembagaName}
+Tempat: ${lembaga?.fullName || student.lembagaName}${mapsLink}
 
 📝 *TUGAS TES:*
 • Hafalkan QS. An Najm ayat 1-15
