@@ -240,6 +240,11 @@ Tanggal: ${tanggalTes}
 Jam: ${jamTes}
 Tempat: ${lembaga?.fullName || student.lembagaName}${lokasiInfo}
 
+📝 *TUGAS TES*
+  - HAFALKAN QS. AN NAJM AYAT 1-15
+  - TES MATEMATIKA DASAR
+  - Wawancara dengan orang tua/wali
+
 📌 *CATATAN PENTING:*
   - Harap datang 15 menit sebelum jadwal tes
   - Membawa alat tulis
