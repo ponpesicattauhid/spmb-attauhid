@@ -202,32 +202,28 @@ export const sendViaWhatsApp = (student: Student) => {
   // Format tanggal singkat
   const tglSingkat = new Date(student.data.tanggalTes).toLocaleDateString('id-ID', { 
     day: 'numeric', 
-    month: 'short', 
-    year: 'numeric' 
+    month: 'short'
   });
   
-  // Maps link
-  const mapsLink = lembaga?.address?.mapsUrl ? `\n📍 ${lembaga.address.mapsUrl}` : '';
-  
-  // Pesan WhatsApp (sangat dipersingkat untuk menghindari URL limit)
-  const message = `*KARTU PESERTA TES SPMB*
-Ponpes IC At Tauhid
+  // Pesan WhatsApp (SANGAT SINGKAT - tanpa maps, detail ada di PDF)
+  const message = `*TES SPMB PONPES IC AT TAUHID*
 
-Yth. ${student.data.namaOrangTua}
-
-*NO TES: ${student.noTes}*
+NO TES: *${student.noTes}*
 Nama: ${student.data.namaSiswa}
 
-*JADWAL:*
+JADWAL:
 ${tglSingkat}, ${student.data.jamTes} WIB
-Tempat: ${lembaga?.fullName || student.lembagaName}${mapsLink}
+${lembaga?.fullName || student.lembagaName}
 
-*TUGAS TES:*
+TUGAS TES:
 • Hafal QS An Najm 1-15
 • Tes Matematika Dasar
 • Wawancara ortu/wali
 
-*BAWA:* Alat tulis, datang 15 menit lebih awal
+BAWA: Alat tulis
+Datang 15 menit lebih awal
+
+Download Kartu Peserta (lengkap dgn alamat & maps) via Admin.
 
 _Panitia SPMB_`;
   
