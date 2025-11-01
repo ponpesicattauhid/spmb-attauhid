@@ -107,9 +107,18 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   const emailLembaga = isSMP ? 'smpita.attauhid@gmail.com' : 'attauhidsmaita@gmail.com';
   doc.text(`Telp. ${telpLembaga} e-mail : ${emailLembaga}`, 105, 42, { align: 'center' });
   
+  // Nomor/NPSN berbeda untuk SMP dan SMA
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.text('NPSN : 70044522', 105, 47, { align: 'center' });
+  if (isSMP) {
+    // SMP: tampilkan NPSN
+    doc.text('NPSN : 70044522', 105, 47, { align: 'center' });
+  } else {
+    // SMA: tampilkan nomor khusus (tanpa NPSN)
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('NOMOR : 188.4/ 04/ DINDIK. SMA/ DPMPTSP/2023', 105, 47, { align: 'center' });
+  }
 
   // Garis pemisah
   doc.setLineWidth(1);
