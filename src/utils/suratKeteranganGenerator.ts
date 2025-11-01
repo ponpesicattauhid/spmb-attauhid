@@ -190,16 +190,16 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Penutup dan tanda tangan
   doc.text(`Pangkalpinang, ${tanggalSurat}`, 130, yPos);
-  yPos += 6;
+  yPos += 5;
 
   doc.text('Kepala Sekolah,', 130, yPos);
-  yPos += 8;
+  yPos += 5;
 
   // Area untuk stempel (kotak placeholder)
   const stempelX = 105;
   const stempelY = yPos;
-  const stempelWidth = 40;
-  const stempelHeight = 25;
+  const stempelWidth = 35;
+  const stempelHeight = 20;
 
   // Kotak stempel dengan border abu-abu
   doc.setLineWidth(0.5);
@@ -207,9 +207,9 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   doc.rect(stempelX, stempelY, stempelWidth, stempelHeight);
 
   // Text placeholder stempel
-  doc.setFontSize(8);
+  doc.setFontSize(7);
   doc.setTextColor(150, 150, 150);
-  doc.text('STEMPEL', stempelX + stempelWidth / 2, stempelY + stempelHeight / 2 - 2, { align: 'center' });
+  doc.text('STEMPEL', stempelX + stempelWidth / 2, stempelY + stempelHeight / 2 - 1, { align: 'center' });
   doc.text('SEKOLAH', stempelX + stempelWidth / 2, stempelY + stempelHeight / 2 + 2, { align: 'center' });
 
   // Reset color
@@ -218,9 +218,9 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Area untuk tanda tangan (kotak placeholder)
   const ttdX = 130;
-  const ttdY = yPos + 2;
+  const ttdY = yPos;
   const ttdWidth = 50;
-  const ttdHeight = 20;
+  const ttdHeight = 18;
 
   // Kotak tanda tangan dengan border abu-abu
   doc.setLineWidth(0.5);
@@ -228,7 +228,7 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   doc.rect(ttdX, ttdY, ttdWidth, ttdHeight);
 
   // Text placeholder tanda tangan
-  doc.setFontSize(8);
+  doc.setFontSize(7);
   doc.setTextColor(150, 150, 150);
   doc.text('TANDA TANGAN', ttdX + ttdWidth / 2, ttdY + ttdHeight / 2, { align: 'center' });
 
@@ -236,7 +236,7 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   doc.setDrawColor(0, 0, 0);
   doc.setTextColor(0, 0, 0);
 
-  yPos += 26;
+  yPos += 22;
 
   // Nama dan NIY kepala sekolah
   doc.setFontSize(11);
