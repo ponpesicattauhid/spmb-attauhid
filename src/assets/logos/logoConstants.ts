@@ -27,11 +27,11 @@ export const addLogoPDF = (doc: any, logoData: any, x: number, y: number, logoTy
     } catch (error) {
       console.warn('Failed to add logo, using placeholder');
       // Fallback ke placeholder jika logo gagal dimuat
-      addLogoPlaceholder(doc, x + logoData.width/2, y + logoData.height/2, logoData.width/2, logoType);
+      addLogoPlaceholder(doc, x + logoData.width / 2, y + logoData.height / 2, logoData.width / 2, logoType);
     }
   } else {
     // Gunakan placeholder jika base64 belum tersedia
-    addLogoPlaceholder(doc, x + logoData.width/2, y + logoData.height/2, logoData.width/2, logoType);
+    addLogoPlaceholder(doc, x + logoData.width / 2, y + logoData.height / 2, logoData.width / 2, logoType);
   }
 };
 
@@ -41,11 +41,11 @@ export const addLogoPlaceholder = (doc: any, centerX: number, centerY: number, r
   doc.setDrawColor(0, 0, 0);
   doc.setLineWidth(1.5);
   doc.circle(centerX, centerY, radius);
-  
+
   // Tambah teks sesuai jenis logo
   doc.setFontSize(6);
   doc.setFont('helvetica', 'bold');
-  
+
   if (logoType === 'PONPES') {
     doc.text('PONPES', centerX, centerY - 2, { align: 'center' });
     doc.text('ICT', centerX, centerY + 2, { align: 'center' });
