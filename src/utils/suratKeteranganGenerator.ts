@@ -103,7 +103,7 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   doc.text('Jl. Gerunggang RT 08 RW 03 Kel. Gerunggang Kec. Kepala Tujuh, Kec. Gerunggang, Prov. Bangka Belitung', 105, 36, { align: 'center' });
   
   // Kontak yang berbeda untuk SMP dan SMA
-  const telpLembaga = isSMP ? '+62 857-5802-1593' : '62812-9758-5207';
+  const telpLembaga = isSMP ? '+62 857-5802-1593' : '+62 812-9758-5207';
   const emailLembaga = isSMP ? 'smpita.attauhid@gmail.com' : 'attauhidsmaita@gmail.com';
   doc.text(`Telp. ${telpLembaga} e-mail : ${emailLembaga}`, 105, 42, { align: 'center' });
   
