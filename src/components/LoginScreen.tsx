@@ -142,18 +142,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               </span>
             </button>
 
-            <div className="mt-6 text-center">
-              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200 rounded-xl p-3">
-                <p className="text-xs text-gray-600 font-medium mb-1">Akun Demo:</p>
-                <p className="text-sm">
-                  <span className="text-gray-700">Username: </span>
-                  <strong className="text-emerald-600">admin</strong>
-                  <span className="text-gray-400 mx-2">|</span>
-                  <span className="text-gray-700">Password: </span>
-                  <strong className="text-emerald-600">admin123</strong>
-                </p>
-              </div>
-            </div>
+
           </form>
         </div>
       </div>
