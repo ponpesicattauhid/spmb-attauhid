@@ -259,15 +259,15 @@ export const getInitialFormData = () => ({
 });
 
 // Hitung kelulusan berdasarkan bobot:
-// - Wawancara (gabungan penilaian anak+ortu, skala 1-5 -> 100): 30%
-// - Tes Matematika (benar dari 5): 35%
-// - Tes Hafalan (benar dari 15): 35%
+// SD: Wawancara 100%
+// SMP/SMA: Wawancara 30%, Matematika 35%, Hafalan 35%
 // KKM: 70
 export const calculateKelulusan = (
   penilaianAnak: PenilaianScores,
   penilaianOrtu: PenilaianScores,
   mathCorrect: number,
-  hafalanBenar: number
+  hafalanBenar: number,
+  lembaga?: string
 ): {
   finalScore: number;
   status: KelulusanStatus;
@@ -290,11 +290,19 @@ export const calculateKelulusan = (
   const mathPercent = (mathBenar / 5) * 100;
   const hafalanPercent = (hafalanOk / 15) * 100;
 
-  const weightedInterview = interviewPercent * 0.30;
-  const weightedMath = mathPercent * 0.35;
-  const weightedHafalan = hafalanPercent * 0.35;
+  let finalScoreRaw: number;
+  
+  // Untuk SD hanya menggunakan wawancara (100%)
+  if (lembaga === 'SDITA') {
+    finalScoreRaw = interviewPercent;
+  } else {
+    // Untuk SMP/SMA menggunakan bobot: Wawancara 30%, Matematika 35%, Hafalan 35%
+    const weightedInterview = interviewPercent * 0.30;
+    const weightedMath = mathPercent * 0.35;
+    const weightedHafalan = hafalanPercent * 0.35;
+    finalScoreRaw = weightedInterview + weightedMath + weightedHafalan;
+  }
 
-  const finalScoreRaw = weightedInterview + weightedMath + weightedHafalan;
   const finalScore = Math.round(finalScoreRaw * 100) / 100; // 2 decimal places
   const status: KelulusanStatus = finalScore >= 70 ? 'LULUS' : 'TIDAK LULUS';
 

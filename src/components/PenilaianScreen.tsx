@@ -46,7 +46,7 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
   const [showGuideOrtu, setShowGuideOrtu] = useState(false);
   const [expandedAnakItems, setExpandedAnakItems] = useState<Set<number>>(new Set());
   const [expandedOrtuItems, setExpandedOrtuItems] = useState<Set<number>>(new Set());
-  const hasil = calculateKelulusan(penilaianAnak, penilaianOrtu, mathCorrect, hafalanBenar);
+  const hasil = calculateKelulusan(penilaianAnak, penilaianOrtu, mathCorrect, hafalanBenar, selectedStudent.lembaga);
 
   const toggleAnakItem = (index: number) => {
     const newExpanded = new Set(expandedAnakItems);
@@ -311,45 +311,49 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           </div>
         </div>
 
-        {/* Tes Matematika */}
-        <div className="glass rounded-3xl shadow-2xl p-4 md:p-6 mb-4 animate-fade-in hover-lift">
-          <h3 className="text-xl font-black text-gray-800 mb-4 flex items-center">
-            <span className="mr-2">🔢</span> Tes Matematika (5 soal)
-          </h3>
-          <div className="flex items-center gap-3">
-            <label className="text-sm font-bold text-gray-700">Jumlah benar:</label>
-            <input
-              type="number"
-              min={0}
-              max={5}
-              value={mathCorrect}
-              onChange={(e) => onMathCorrectChange?.(parseInt(e.target.value || '0', 10))}
-              className="w-24 border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all bg-white/50 backdrop-blur-sm font-bold text-center"
-              aria-label="Jumlah jawaban benar matematika"
-            />
-            <span className="text-sm text-gray-600 font-medium">dari 5 soal</span>
+        {/* Tes Matematika - Hanya untuk SMP dan SMA */}
+        {selectedStudent.lembaga !== 'SDITA' && (
+          <div className="glass rounded-3xl shadow-2xl p-4 md:p-6 mb-4 animate-fade-in hover-lift">
+            <h3 className="text-xl font-black text-gray-800 mb-4 flex items-center">
+              <span className="mr-2">🔢</span> Tes Matematika (5 soal)
+            </h3>
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-bold text-gray-700">Jumlah benar:</label>
+              <input
+                type="number"
+                min={0}
+                max={5}
+                value={mathCorrect}
+                onChange={(e) => onMathCorrectChange?.(parseInt(e.target.value || '0', 10))}
+                className="w-24 border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all bg-white/50 backdrop-blur-sm font-bold text-center"
+                aria-label="Jumlah jawaban benar matematika"
+              />
+              <span className="text-sm text-gray-600 font-medium">dari 5 soal</span>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Tes Hafalan */}
-        <div className="glass rounded-3xl shadow-2xl p-4 md:p-6 mb-4 animate-fade-in hover-lift">
-          <h3 className="text-xl font-black text-gray-800 mb-4 flex items-center">
-            <span className="mr-2">📖</span> Tes Hafalan (15 baris)
-          </h3>
-          <div className="flex items-center gap-3">
-            <label className="text-sm font-bold text-gray-700">Jumlah baris benar:</label>
-            <input
-              type="number"
-              min={0}
-              max={15}
-              value={hafalanBenar}
-              onChange={(e) => onHafalanBenarChange?.(parseInt(e.target.value || '0', 10))}
-              className="w-24 border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-purple-100 focus:border-purple-400 transition-all bg-white/50 backdrop-blur-sm font-bold text-center"
-              aria-label="Jumlah baris hafalan benar"
-            />
-            <span className="text-sm text-gray-600 font-medium">dari 15 baris</span>
+        {/* Tes Hafalan - Hanya untuk SMP dan SMA */}
+        {selectedStudent.lembaga !== 'SDITA' && (
+          <div className="glass rounded-3xl shadow-2xl p-4 md:p-6 mb-4 animate-fade-in hover-lift">
+            <h3 className="text-xl font-black text-gray-800 mb-4 flex items-center">
+              <span className="mr-2">📖</span> Tes Hafalan (15 baris)
+            </h3>
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-bold text-gray-700">Jumlah baris benar:</label>
+              <input
+                type="number"
+                min={0}
+                max={15}
+                value={hafalanBenar}
+                onChange={(e) => onHafalanBenarChange?.(parseInt(e.target.value || '0', 10))}
+                className="w-24 border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-purple-100 focus:border-purple-400 transition-all bg-white/50 backdrop-blur-sm font-bold text-center"
+                aria-label="Jumlah baris hafalan benar"
+              />
+              <span className="text-sm text-gray-600 font-medium">dari 15 baris</span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Informasi Tambahan */}
         <div className="glass rounded-3xl shadow-2xl p-4 md:p-6 mb-4 animate-fade-in hover-lift">
@@ -393,21 +397,35 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           <h3 className="text-2xl font-black text-gray-800 mb-3 flex items-center">
             <span className="mr-2">🎯</span> Hasil Kelulusan
           </h3>
-          <p className="text-sm text-gray-600 mb-4 font-medium">KKM 70 dengan bobot: Wawancara 30%, Matematika 35%, Hafalan 35%</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="p-5 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg hover-lift">
-              <div className="text-sm text-white/90 font-semibold mb-1">Wawancara (30%)</div>
-              <div className="text-3xl font-black text-white">{((hasil.breakdown.interview / 100) * 30).toFixed(1)}%</div>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg hover-lift">
-              <div className="text-sm text-white/90 font-semibold mb-1">Matematika (35%)</div>
-              <div className="text-3xl font-black text-white">{((hasil.breakdown.math / 100) * 35).toFixed(1)}%</div>
-            </div>
-            <div className="p-5 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg hover-lift">
-              <div className="text-sm text-white/90 font-semibold mb-1">Hafalan (35%)</div>
-              <div className="text-3xl font-black text-white">{((hasil.breakdown.hafalan / 100) * 35).toFixed(1)}%</div>
-            </div>
-          </div>
+          {selectedStudent.lembaga === 'SDITA' ? (
+            <>
+              <p className="text-sm text-gray-600 mb-4 font-medium">KKM 70 dengan bobot: Wawancara 100%</p>
+              <div className="grid grid-cols-1 gap-4 mb-6">
+                <div className="p-5 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg hover-lift">
+                  <div className="text-sm text-white/90 font-semibold mb-1">Wawancara (100%)</div>
+                  <div className="text-3xl font-black text-white">{hasil.breakdown.interview.toFixed(1)}%</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-gray-600 mb-4 font-medium">KKM 70 dengan bobot: Wawancara 30%, Matematika 35%, Hafalan 35%</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="p-5 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg hover-lift">
+                  <div className="text-sm text-white/90 font-semibold mb-1">Wawancara (30%)</div>
+                  <div className="text-3xl font-black text-white">{((hasil.breakdown.interview / 100) * 30).toFixed(1)}%</div>
+                </div>
+                <div className="p-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg hover-lift">
+                  <div className="text-sm text-white/90 font-semibold mb-1">Matematika (35%)</div>
+                  <div className="text-3xl font-black text-white">{((hasil.breakdown.math / 100) * 35).toFixed(1)}%</div>
+                </div>
+                <div className="p-5 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl shadow-lg hover-lift">
+                  <div className="text-sm text-white/90 font-semibold mb-1">Hafalan (35%)</div>
+                  <div className="text-3xl font-black text-white">{((hasil.breakdown.hafalan / 100) * 35).toFixed(1)}%</div>
+                </div>
+              </div>
+            </>
+          )}
           <div className={`p-6 rounded-2xl border-4 flex items-center justify-between shadow-xl ${
             hasil.status === 'LULUS' 
               ? 'bg-gradient-to-r from-emerald-100 to-green-100 border-emerald-400' 

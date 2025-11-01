@@ -312,7 +312,7 @@ export const useStudentData = (currentUser: User | null = null) => {
     if (!selectedStudent) return;
 
     try {
-      const { finalScore, status } = calculateKelulusan(penilaianAnak, penilaianOrtu, mathCorrect, hafalanBenar);
+      const { finalScore, status } = calculateKelulusan(penilaianAnak, penilaianOrtu, mathCorrect, hafalanBenar, selectedStudent.lembaga);
       const finalScoreInt = Math.round(finalScore);
       
       // Debug: Log currentUser data
