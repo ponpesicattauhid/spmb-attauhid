@@ -98,13 +98,17 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   doc.text('ISLAMIC CENTRE AT-TAUHID BANGKA BELITUNG', 105, 22, { align: 'center' });
   doc.text(`${lembagaCode} AT-TAUHID PANGKALPINANG`, 105, 29, { align: 'center' });
 
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.text('NOMOR POKOK SEKOLAH NASIONAL (NPSN) : 70044522', 105, 36, { align: 'center' });
-
   doc.setFontSize(9);
-  doc.text('Jl. Gerunggang RT 08 RW 03 Kel. Gerunggang Kec. Kepala Tujuh, Kec. Gerunggang, Prov. Bangka Belitung', 105, 42, { align: 'center' });
-  doc.text('Telp. 0812-9738-5207 E-mail : attauhidsmatta@gmail.com', 105, 47, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.text('Jl. Gerunggang RT 08 RW 03 Kel. Gerunggang Kec. Kepala Tujuh, Kec. Gerunggang, Prov. Bangka Belitung', 105, 36, { align: 'center' });
+  
+  // Email yang berbeda untuk SMP dan SMA
+  const emailLembaga = isSMP ? 'smpita.attauhid@gmail.com' : 'smaita.attauhid@gmail.com';
+  doc.text(`Telp. +62 857-5802-1593 e-mail : ${emailLembaga}`, 105, 42, { align: 'center' });
+  
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('NPSN : 70044522', 105, 47, { align: 'center' });
 
   // Garis pemisah
   doc.setLineWidth(1);
@@ -127,8 +131,7 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   const pembukaan = [
     `Yang bertanda tangan di bawah ini, Kepala ${lembagaText} Islam Tahfizh Al-Qur'an At-Tauhid`,
-    'Pangkalpinang Nomor Pokok Sekolah Nasional (NPSN) 70044522 Provinsi Bangka',
-    'Belitung, menerangkan bahwa:'
+    'Pangkalpinang Provinsi Bangka Belitung, menerangkan bahwa:'
   ];
 
   pembukaan.forEach(line => {
@@ -165,10 +168,10 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
     // Redaksi yang benar untuk siswa lulus
     const redaksiLulus = [
       'dinyatakan LULUS dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.',
-      'Mohon untuk segera melakukan pembayaran dengan ketentuan : Prosedur daftar ulang adalah',
-      'dengan membayar kewajiban Uang Pangkal sekurang kurangnya 50% dari total uang pangkal',
-      'ditambah SPP Juli 2026 paling lambat 14 hari setelah surat ini diterbitkan dan sisanya',
-      'dilunasi paling lambat 1 bulan setelahnya.'
+      'Mohon untuk segera melakukan pembayaran dengan ketentuan : Prosedur daftar ulang',
+      'Adalah dengan membayar kewajiban Uang Pangkal sekurang kurangnya 50% dari total uang',
+      'pangkal ditambah SPP Juli 2026 paling lambat 14 hari setelah surat ini diterbitkan dan',
+      'sisanya dilunasi paling lambat 1 bulan setelahnya.'
     ];
 
     redaksiLulus.forEach(line => {
