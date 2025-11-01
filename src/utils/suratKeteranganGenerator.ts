@@ -183,7 +183,9 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
     yPos += 8;
   } else if (student.kelulusan === 'TIDAK LULUS') {
-    doc.text('Untuk informasi biaya jika ingin mendaftar ulang tahun depan:', 20, yPos);
+    doc.text('Karena dinyatakan tidak lulus, tidak ada kewajiban pembayaran untuk tahun ini.', 20, yPos);
+    yPos += 6;
+    doc.text('Untuk informasi biaya jika ingin mendaftar ulang tahun depan, silakan hubungi panitia.', 20, yPos);
     yPos += 8;
   } else {
     // Belum ada status kelulusan
@@ -191,10 +193,22 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
     yPos += 8;
   }
 
-  // Biaya berdasarkan asrama/non asrama (selalu ditampilkan)
-  const uangPangkal = isAsrama ? 'Rp. 12.800.000,-' : 'Rp. 9.800.000,-';
-  const spp = isAsrama ? 'Rp. 1.300.000,-' : 'Rp. 450.000,-';
-  const total = isAsrama ? 'Rp. 14.100.000,-' : 'Rp. 10.250.000,-';
+  // Biaya berdasarkan status kelulusan dan asrama/non asrama
+  let uangPangkal: string;
+  let spp: string;
+  let total: string;
+
+  if (student.kelulusan === 'TIDAK LULUS') {
+    // Jika tidak lulus, semua biaya = 0
+    uangPangkal = 'Rp. 0,-';
+    spp = 'Rp. 0,-';
+    total = 'Rp. 0,-';
+  } else {
+    // Jika lulus atau belum diuji, tampilkan biaya normal
+    uangPangkal = isAsrama ? 'Rp. 12.800.000,-' : 'Rp. 9.800.000,-';
+    spp = isAsrama ? 'Rp. 1.300.000,-' : 'Rp. 450.000,-';
+    total = isAsrama ? 'Rp. 14.100.000,-' : 'Rp. 10.250.000,-';
+  }
 
   // Tabel biaya modern
   const tableX = 20;
