@@ -7,11 +7,11 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
-    format: 'a4'
+    format: [210, 330] // F4 size: 210mm x 330mm (lebih panjang dari A4)
   });
 
-  // A4 size: 210mm x 297mm
-  // Safe area: 20mm margins = 170mm x 257mm usable area
+  // F4 size: 210mm x 330mm
+  // Safe area: 20mm margins = 170mm x 290mm usable area
 
   // Format tanggal untuk display
   const formatTanggal = (dateString: string) => {
@@ -307,30 +307,21 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   doc.text(`NIY. ${kepalaSekolah.niy}`, 130, yPos);
   yPos += 10; // Kurangi dari 15 ke 10
 
-  // Cek apakah masih ada ruang untuk tembusan (margin bawah 20mm)
-  const pageHeight = doc.internal.pageSize.getHeight(); // 297mm untuk A4
-  const bottomMargin = 20;
-  const availableSpace = pageHeight - bottomMargin - yPos;
+  // Tembusan (F4 memiliki ruang cukup)
+  doc.setFontSize(10);
+  doc.text('Tembusan :', 20, yPos);
+  yPos += 5;
 
-  if (availableSpace > 25) { // Minimal 25mm untuk tembusan
-    // Tembusan
-    doc.setFontSize(10);
-    doc.text('Tembusan :', 20, yPos);
-    yPos += 5;
+  const tembusan = [
+    'Ketua Panitia PPDB Tahun Ajaran 2026/2027',
+    'Staf Administrasi Sistem Yayasan',
+    'Staf Keuangan Yayasan'
+  ];
 
-    const tembusan = [
-      'Ketua Panitia PPDB Tahun Ajaran 2026/2027',
-      'Staf Administrasi Sistem Yayasan',
-      'Staf Keuangan Yayasan'
-    ];
-
-    tembusan.forEach(item => {
-      if (yPos < pageHeight - bottomMargin - 5) { // Cek setiap baris
-        doc.text('- ' + item, 25, yPos);
-        yPos += 4; // Kurangi spacing dari 5 ke 4
-      }
-    });
-  }
+  tembusan.forEach(item => {
+    doc.text('- ' + item, 25, yPos);
+    yPos += 5; // Kembalikan spacing normal
+  });
 
   return doc;
 };
