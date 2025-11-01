@@ -174,16 +174,69 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
       yPos += 6;
     });
 
-    yPos += 5;
+    yPos += 8;
 
     // Biaya berdasarkan asrama/non asrama
     const uangPangkal = isAsrama ? 'Rp. 12.800.000,-' : 'Rp. 9.800.000,-';
     const spp = isAsrama ? 'Rp. 1.300.000,-' : 'Rp. 450.000,-';
+    const total = isAsrama ? 'Rp. 14.100.000,-' : 'Rp. 10.250.000,-';
 
-    doc.text(`Kewajiban Uang Pangkal         : ${uangPangkal}`, 20, yPos);
-    yPos += 6;
-    doc.text(`Kewajiban SPP                            : ${spp}`, 20, yPos);
-    yPos += 15;
+    // Tabel biaya modern
+    const tableX = 20;
+    const tableWidth = 170;
+    const colWidth1 = 120;
+    const colWidth2 = 50;
+    const rowHeight = 8;
+
+    // Header tabel
+    doc.setFillColor(37, 99, 235);
+    doc.rect(tableX, yPos, tableWidth, rowHeight, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text('RINCIAN BIAYA', tableX + 3, yPos + 5.5);
+    doc.text('NOMINAL', tableX + colWidth1 + 3, yPos + 5.5);
+
+    yPos += rowHeight;
+
+    // Reset color untuk isi tabel
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+
+    // Row 1: Uang Pangkal
+    doc.setFillColor(248, 250, 252);
+    doc.rect(tableX, yPos, tableWidth, rowHeight, 'F');
+    doc.setLineWidth(0.3);
+    doc.setDrawColor(200, 200, 200);
+    doc.rect(tableX, yPos, colWidth1, rowHeight);
+    doc.rect(tableX + colWidth1, yPos, colWidth2, rowHeight);
+    doc.text('Kewajiban Uang Pangkal', tableX + 3, yPos + 5.5);
+    doc.text(uangPangkal, tableX + colWidth1 + colWidth2 - 3, yPos + 5.5, { align: 'right' });
+
+    yPos += rowHeight;
+
+    // Row 2: SPP
+    doc.rect(tableX, yPos, colWidth1, rowHeight);
+    doc.rect(tableX + colWidth1, yPos, colWidth2, rowHeight);
+    doc.text('Kewajiban SPP Juli 2026', tableX + 3, yPos + 5.5);
+    doc.text(spp, tableX + colWidth1 + colWidth2 - 3, yPos + 5.5, { align: 'right' });
+
+    yPos += rowHeight;
+
+    // Row Total
+    doc.setFillColor(37, 99, 235);
+    doc.rect(tableX, yPos, tableWidth, rowHeight, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('TOTAL BIAYA', tableX + 3, yPos + 5.5);
+    doc.text(total, tableX + colWidth1 + colWidth2 - 3, yPos + 5.5, { align: 'right' });
+
+    // Reset
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    doc.setDrawColor(0, 0, 0);
+
+    yPos += rowHeight + 10;
   } else {
     yPos += 20;
   }
