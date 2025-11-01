@@ -190,10 +190,10 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Penutup dan tanda tangan
   doc.text(`Pangkalpinang, ${tanggalSurat}`, 130, yPos);
-  yPos += 10;
+  yPos += 6;
 
   doc.text('Kepala Sekolah,', 130, yPos);
-  yPos += 15;
+  yPos += 8;
 
   // Area untuk stempel (kotak placeholder)
   const stempelX = 105;
@@ -209,8 +209,8 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   // Text placeholder stempel
   doc.setFontSize(8);
   doc.setTextColor(150, 150, 150);
-  doc.text('STEMPEL', stempelX + stempelWidth/2, stempelY + stempelHeight/2 - 2, { align: 'center' });
-  doc.text('SEKOLAH', stempelX + stempelWidth/2, stempelY + stempelHeight/2 + 2, { align: 'center' });
+  doc.text('STEMPEL', stempelX + stempelWidth / 2, stempelY + stempelHeight / 2 - 2, { align: 'center' });
+  doc.text('SEKOLAH', stempelX + stempelWidth / 2, stempelY + stempelHeight / 2 + 2, { align: 'center' });
 
   // Reset color
   doc.setDrawColor(0, 0, 0);
@@ -218,7 +218,7 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Area untuk tanda tangan (kotak placeholder)
   const ttdX = 130;
-  const ttdY = yPos + 5;
+  const ttdY = yPos + 2;
   const ttdWidth = 50;
   const ttdHeight = 20;
 
@@ -230,13 +230,13 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   // Text placeholder tanda tangan
   doc.setFontSize(8);
   doc.setTextColor(150, 150, 150);
-  doc.text('TANDA TANGAN', ttdX + ttdWidth/2, ttdY + ttdHeight/2, { align: 'center' });
+  doc.text('TANDA TANGAN', ttdX + ttdWidth / 2, ttdY + ttdHeight / 2, { align: 'center' });
 
   // Reset color
   doc.setDrawColor(0, 0, 0);
   doc.setTextColor(0, 0, 0);
 
-  yPos += 30;
+  yPos += 26;
 
   // Nama dan NIY kepala sekolah
   doc.setFontSize(11);
