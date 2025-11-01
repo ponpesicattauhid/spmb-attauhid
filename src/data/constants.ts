@@ -213,15 +213,15 @@ export const rubrikSantri: Record<string, string> = {
 };
 
 export const rubrikOrtu: Record<string, string> = {
-  'Penampilan orang tua': '1: tidak sopan/berantakan; tidak sesuai etika. 2: kurang rapi; beberapa hal tidak sesuai. 3: cukup rapi; sesuai minimal. 4: rapi; sesuai norma; positif. 5: sangat rapi; sangat mencerminkan teladan.',
+  'Penampilan orang tua': '1: Tidak sopan dan tidak syar\'i. 2: Kurang rapi, sebagian tidak sesuai syariat. 3: Cukup rapi, menutup aurat namun belum sepenuhnya syar\'i. 4: Rapi, sopan, dan sesuai adab berpakaian Islami. 5: Syar\'i, rapi, dan mencerminkan keteladanan Islami.',
   'Sikap orang tua jika anak tidak sholat 5 waktu': '1: abai; 3: mengingatkan kadang; 5: tegas dan membimbing.',
   'Tipe anak (cari Info dari orang tua)': '1: mudah emosi/sulit diarahkan; 3: kadang sulit; 5: kooperatif dan disiplin.',
-  'Kajian yang diikuti orang tua': '1: jarang; 3: kadang; 5: rutin.',
+  'Kajian yang diikuti orang tua': '1: Jarang atau tidak pernah mengikuti kajian. 2: Sesekali hadir, tanpa istiqamah. 3: Kadang mengikuti kajian umum. 4: Cukup rutin mengikuti kajian keislaman. 5: Rutin mengikuti kajian sunnah dan bersemangat menuntut ilmu.',
   'Kesanggupan orang tua mengikuti kajian dan Program Tahsin Wali Santri': '1: tidak sanggup; 3: sanggup sebagian; 5: sanggup konsisten.',
   'Kesanggupan mengikuti kajian dan Program Tahsin Wali Santri': '1: tidak sanggup; 3: sanggup sebagian; 5: sanggup konsisten.',
-  'Alasan memilih sekolah di At Tauhid': '1: tidak jelas; 3: cukup jelas; 5: selaras visi misi.',
+  'Alasan memilih sekolah di At Tauhid': '1: Alasan tidak jelas atau bersifat umum (misal: ikut-ikutan, dekat rumah). 2: Ada alasan, namun kurang menunjukkan kesadaran akan visi Islami sekolah. 3: Alasan cukup jelas dan menunjukkan keinginan menyekolahkan anak di lingkungan Islami. 4: Alasan selaras dengan tujuan pendidikan Islam dan pembinaan akhlak. 5: Alasan sangat jelas, selaras dengan visi-misi At-Tauhid dalam membentuk generasi Qur\'ani dan berakhlak sunnah.',
   'Pernyataan sanggup sekolah meski kurikulumnya berat': '1: ragu; 3: sanggup dengan catatan; 5: sanggup tegas.',
-  'Komitmen melarang anak menonton tayangan tidak mendidik': '1: tidak konsisten; 3: mulai konsisten; 5: konsisten tegas.',
+  'Komitmen melarang anak menonton tayangan tidak mendidik': '1: Tidak konsisten; anak masih bebas menonton tayangan tidak mendidik. 2: Sudah menasihati, tetapi belum tegas membatasi tontonan anak. 3: Mulai konsisten mengawasi tontonan anak, namun belum sepenuhnya terkontrol. 4: Konsisten mengarahkan anak pada tontonan bermanfaat dan islami. 5: Konsisten dan tegas melarang anak menonton tayangan tidak mendidik, serta menanamkan adab dan nilai syar\'i dalam penggunaan media.',
   'Komitmen tidak memberikan HP kepada anak': '1: tidak komit; 3: komit bersyarat; 5: komit penuh.',
   'Cara orang tua agar anak bisa menghafal': '1: tanpa rencana; 3: rencana dasar; 5: rencana jelas dan pendampingan.',
   'Komitmen membantu membimbing anak menghafal di rumah': '1: tidak sanggup; tidak ada waktu/komitmen. 2: sanggup terbatas; tanpa rencana jelas. 3: sanggup dengan rencana dasar; konsistensi sedang. 4: sanggup dengan rencana terstruktur; konsisten. 5: sangat sanggup; rencana detail; komitmen tinggi.',
@@ -230,12 +230,12 @@ export const rubrikOrtu: Record<string, string> = {
   'Kesanggupan melunasi biaya daftar ulang': '1: tidak sanggup; 3: sanggup bertahap; 5: sanggup tepat waktu.',
   'Kesanggupan melunasi biaya daftar ulang Rp. 600.000': '1: tidak sanggup; 3: sanggup bertahap; 5: sanggup tepat waktu.',
   'Sikap terhadap uang pangkal tidak bisa dikembalikan': '1: tidak setuju; 3: setuju dengan catatan; 5: setuju dan paham aturan.',
-  'Kesanggupan mentaati semua aturan sekolah': '1: sering melanggar; 3: kadang melanggar; 5: taat aturan.',
+  'Kesanggupan mentaati semua aturan sekolah': '1: Kurang siap menaati aturan sekolah. 3: Siap menaati sebagian aturan, namun masih perlu bimbingan. 5: Siap dan berkomitmen penuh menaati seluruh aturan sekolah dengan kesadaran syar\'i.',
   'Sikap terhadap Peraturan kredit poin': '1: menolak; 3: menerima sebagian; 5: menerima dan mendukung.',
   'Sikap terhadap SPP paling lambat tgl 10': '1: tidak setuju; 3: setuju dengan catatan; 5: setuju dan siap patuhi.',
   'Sikap terhadap Peraturan Pengabdian santri': '1: menolak; 3: menerima sebagian; 5: menerima dan mendukung.',
   'Sikap terhadap Ijazah pondok diberikan setelah 1 tahun': '1: menolak; 3: ragu; 5: menerima dan paham tujuan.',
-  'Penilaian terhadap Anak': '1: persepsi negatif; 3: netral; 5: objektif dan konstruktif.',
+  'Penilaian terhadap Anak': '1: Kurang sopan, enggan berinteraksi, atau menunjukkan sikap negatif. 3: Bersikap netral; menjawab seperlunya namun belum tampak antusias atau beradab kuat. 5: Menunjukkan adab yang baik, sopan, percaya diri, dan jawaban yang positif serta membangun.',
   'Penilaian terhadap orang tua': '1: tidak kooperatif; 3: cukup kooperatif; 5: kooperatif aktif.',
   'Peraturan kredit poin': '1: menolak; 3: menerima sebagian; 5: menerima dan mendukung.'
 };
