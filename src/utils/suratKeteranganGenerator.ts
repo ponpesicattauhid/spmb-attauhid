@@ -178,16 +178,36 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
     yPos += 8;
   } else if (student.kelulusan === 'TIDAK LULUS') {
-    // Redaksi untuk siswa tidak lulus
+    // Redaksi sopan untuk siswa tidak lulus
     const redaksiTidakLulus = [
-      'dinyatakan TIDAK LULUS dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.',
-      'Karena dinyatakan tidak lulus, tidak ada kewajiban pembayaran untuk tahun ini.',
-      'Untuk informasi biaya jika ingin mendaftar ulang tahun depan, silakan hubungi panitia.'
+      'Dengan penuh hormat, kami mengucapkan terima kasih atas partisipasi Bapak/Ibu dan ananda',
+      'yang telah mengikuti proses seleksi SISTEM PENERIMAAN SISWA BARU (SPMB) di SMP Islam',
+      'Tahfizh Al-Qur\'an At-Tauhid Pangkalpinang.',
+      '',
+      'Berdasarkan hasil evaluasi seleksi akademik, wawancara, dan tahsin/tahfizh, kami sampaikan',
+      'bahwa untuk saat ini ananda belum dapat dinyatakan lulus dalam seleksi penerimaan siswa',
+      'baru tahun pelajaran 2026/2027.',
+      '',
+      'Keputusan ini diambil dengan mempertimbangkan hasil keseluruhan proses seleksi serta',
+      'ketersediaan kuota peserta didik. Kami sangat menghargai semangat belajar dan usaha yang',
+      'telah ditunjukkan oleh ananda selama mengikuti rangkaian tes.',
+      '',
+      'Kami berharap ananda tetap semangat untuk terus belajar dan berjuang meraih cita-cita,',
+      'serta menjadikan pengalaman ini sebagai motivasi untuk menjadi pribadi yang lebih baik.',
+      'Semoga Allah Subhanahu wa Ta\'ala senantiasa memberikan keberkahan dan kemudahan dalam',
+      'setiap langkah ananda.',
+      '',
+      'Demikian informasi ini kami sampaikan. Atas perhatian dan kerja sama Bapak/Ibu kami',
+      'ucapkan terima kasih.'
     ];
 
     redaksiTidakLulus.forEach(line => {
-      doc.text(line, 20, yPos);
-      yPos += 6;
+      if (line === '') {
+        yPos += 3; // Spacing untuk baris kosong
+      } else {
+        doc.text(line, 20, yPos);
+        yPos += 5; // Spacing lebih rapat untuk teks panjang
+      }
     });
 
     yPos += 8;
