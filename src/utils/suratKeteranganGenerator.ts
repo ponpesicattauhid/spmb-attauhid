@@ -193,10 +193,57 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   yPos += 10;
 
   doc.text('Kepala Sekolah,', 130, yPos);
+  yPos += 15;
+
+  // Area untuk stempel (kotak placeholder)
+  const stempelX = 105;
+  const stempelY = yPos;
+  const stempelWidth = 40;
+  const stempelHeight = 25;
+
+  // Kotak stempel dengan border abu-abu
+  doc.setLineWidth(0.5);
+  doc.setDrawColor(150, 150, 150);
+  doc.rect(stempelX, stempelY, stempelWidth, stempelHeight);
+
+  // Text placeholder stempel
+  doc.setFontSize(8);
+  doc.setTextColor(150, 150, 150);
+  doc.text('STEMPEL', stempelX + stempelWidth/2, stempelY + stempelHeight/2 - 2, { align: 'center' });
+  doc.text('SEKOLAH', stempelX + stempelWidth/2, stempelY + stempelHeight/2 + 2, { align: 'center' });
+
+  // Reset color
+  doc.setDrawColor(0, 0, 0);
+  doc.setTextColor(0, 0, 0);
+
+  // Area untuk tanda tangan (kotak placeholder)
+  const ttdX = 130;
+  const ttdY = yPos + 5;
+  const ttdWidth = 50;
+  const ttdHeight = 20;
+
+  // Kotak tanda tangan dengan border abu-abu
+  doc.setLineWidth(0.5);
+  doc.setDrawColor(150, 150, 150);
+  doc.rect(ttdX, ttdY, ttdWidth, ttdHeight);
+
+  // Text placeholder tanda tangan
+  doc.setFontSize(8);
+  doc.setTextColor(150, 150, 150);
+  doc.text('TANDA TANGAN', ttdX + ttdWidth/2, ttdY + ttdHeight/2, { align: 'center' });
+
+  // Reset color
+  doc.setDrawColor(0, 0, 0);
+  doc.setTextColor(0, 0, 0);
+
   yPos += 30;
 
+  // Nama dan NIY kepala sekolah
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
   doc.text(kepalaSekolah.nama, 130, yPos);
   yPos += 6;
+  doc.setFont('helvetica', 'normal');
   doc.text(`NIY. ${kepalaSekolah.niy}`, 130, yPos);
   yPos += 15;
 
