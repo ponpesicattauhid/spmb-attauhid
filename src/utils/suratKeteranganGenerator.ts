@@ -4,7 +4,14 @@ import { lembagaData } from '../data/constants';
 import { LOGO_PONPES_ICT, LOGO_SMP_ATTAUHID, LOGO_SMA_ATTAUHID, addLogoPDF } from '../assets/logos/logoConstants';
 
 export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
-  const doc = new jsPDF();
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  // A4 size: 210mm x 297mm
+  // Safe area: 20mm margins = 170mm x 257mm usable area
 
   // Format tanggal untuk display
   const formatTanggal = (dateString: string) => {
@@ -101,7 +108,7 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Garis pemisah
   doc.setLineWidth(1);
-  doc.line(20, 52, 190, 52);
+  doc.line(20, 52, 190, 52); // 210mm - 20mm margin = 190mm
   doc.setLineWidth(0.5);
   doc.line(20, 54, 190, 54);
 
@@ -183,8 +190,8 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
     // Tabel biaya modern
     const tableX = 20;
-    const tableWidth = 170;
-    const colWidth1 = 120;
+    const tableWidth = 150; // Dikurangi dari 170 ke 150 (margin kanan 20mm)
+    const colWidth1 = 100;  // Dikurangi dari 120 ke 100
     const colWidth2 = 50;
     const rowHeight = 8;
 
