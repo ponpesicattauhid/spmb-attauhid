@@ -83,13 +83,13 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Header - Kop Surat dengan Logo
 
-  // Logo Kiri - Ponpes Islamic Centre At-Tauhid (geser lebih ke kiri)
-  addLogoPDF(doc, LOGO_PONPES_ICT, 15, 13, 'PONPES');
+  // Logo Kiri - Ponpes Islamic Centre At-Tauhid (geser ke atas)
+  addLogoPDF(doc, LOGO_PONPES_ICT, 15, 10, 'PONPES');
 
-  // Logo Kanan - Berdasarkan deteksi lembaga yang sudah diperbaiki
+  // Logo Kanan - Berdasarkan deteksi lembaga yang sudah diperbaiki (geser ke atas)
   const rightLogo = isSMP ? LOGO_SMP_ATTAUHID : LOGO_SMA_ATTAUHID;
   const rightLogoType = isSMP ? 'SMP' : 'SMA';
-  addLogoPDF(doc, rightLogo, 171, 13, rightLogoType);
+  addLogoPDF(doc, rightLogo, 171, 10, rightLogoType);
 
   // Teks Header
   doc.setFontSize(14);
