@@ -222,6 +222,19 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   // Tabel biaya hanya untuk siswa lulus atau belum diuji
   if (student.kelulusan !== 'TIDAK LULUS') {
+    // Informasi cara pembayaran
+    const infoPembayaran = [
+      'Pembayaran tunai bisa langsung ke kasir sekolah pada jam operasional 06:50 WIB s/d 11:45 WIB,',
+      'atau dapat dilakukan pembayaran via Aplikasi Hijrah https://apk-attauhid.kreasinternasional.com/'
+    ];
+
+    infoPembayaran.forEach(line => {
+      doc.text(line, 20, yPos);
+      yPos += 6;
+    });
+
+    yPos += 8;
+
     // Biaya berdasarkan asrama/non asrama
     const uangPangkal = isAsrama ? 'Rp. 12.800.000,-' : 'Rp. 9.800.000,-';
     const spp = isAsrama ? 'Rp. 1.300.000,-' : 'Rp. 450.000,-';
