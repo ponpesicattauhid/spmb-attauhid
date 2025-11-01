@@ -155,15 +155,15 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   dataLines.forEach(item => {
     doc.text(item.label.padEnd(35), 20, yPos);
     doc.text(item.value, 20 + labelWidth, yPos);
-    yPos += 6;
+    yPos += 5; // Kurangi dari 6 ke 5
   });
 
-  yPos += 5;
+  yPos += 4; // Kurangi dari 5 ke 4
 
   // Pernyataan kelulusan
   const statusText = student.kelulusan === 'LULUS' ? 'LULUS' : 'TIDAK LULUS';
   doc.text(`dinyatakan ${statusText} dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.`, 20, yPos);
-  yPos += 10;
+  yPos += 8; // Kurangi dari 10 ke 8
 
   // Informasi pembayaran (hanya jika lulus)
   if (student.kelulusan === 'LULUS') {
@@ -190,8 +190,8 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
     // Tabel biaya modern
     const tableX = 20;
-    const tableWidth = 150; // Dikurangi dari 170 ke 150 (margin kanan 20mm)
-    const colWidth1 = 100;  // Dikurangi dari 120 ke 100
+    const tableWidth = 170; // Kembalikan ke 170mm
+    const colWidth1 = 120;  // Kembalikan ke 120mm
     const colWidth2 = 50;
     const rowHeight = 8;
 
@@ -305,23 +305,32 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
   yPos += 6;
   doc.setFont('helvetica', 'normal');
   doc.text(`NIY. ${kepalaSekolah.niy}`, 130, yPos);
-  yPos += 15;
+  yPos += 10; // Kurangi dari 15 ke 10
 
-  // Tembusan
-  doc.setFontSize(10);
-  doc.text('Tembusan :', 20, yPos);
-  yPos += 5;
+  // Cek apakah masih ada ruang untuk tembusan (margin bawah 20mm)
+  const pageHeight = doc.internal.pageSize.getHeight(); // 297mm untuk A4
+  const bottomMargin = 20;
+  const availableSpace = pageHeight - bottomMargin - yPos;
 
-  const tembusan = [
-    'Ketua Panitia PPDB Tahun Ajaran 2026/2027',
-    'Staf Administrasi Sistem Yayasan',
-    'Staf Keuangan Yayasan'
-  ];
-
-  tembusan.forEach(item => {
-    doc.text('- ' + item, 25, yPos);
+  if (availableSpace > 25) { // Minimal 25mm untuk tembusan
+    // Tembusan
+    doc.setFontSize(10);
+    doc.text('Tembusan :', 20, yPos);
     yPos += 5;
-  });
+
+    const tembusan = [
+      'Ketua Panitia PPDB Tahun Ajaran 2026/2027',
+      'Staf Administrasi Sistem Yayasan',
+      'Staf Keuangan Yayasan'
+    ];
+
+    tembusan.forEach(item => {
+      if (yPos < pageHeight - bottomMargin - 5) { // Cek setiap baris
+        doc.text('- ' + item, 25, yPos);
+        yPos += 4; // Kurangi spacing dari 5 ke 4
+      }
+    });
+  }
 
   return doc;
 };
