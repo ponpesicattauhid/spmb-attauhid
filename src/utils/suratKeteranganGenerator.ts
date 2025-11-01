@@ -1,0 +1,231 @@
+import jsPDF from 'jspdf';
+import { Student } from '../types';
+import { lembagaData } from '../data/constants';
+import { LOGO_PONPES_ICT, LOGO_SMP_ATTAUHID, LOGO_SMA_ATTAUHID, addLogoPDF } from '../assets/logos/logoConstants';
+
+export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
+  const doc = new jsPDF();
+
+  // Format tanggal untuk display
+  const formatTanggal = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  // Get lembaga info untuk menentukan logo yang sesuai
+  const lembaga = lembagaData.find(l => l.id === student.lembaga);
+
+  // Tentukan jenis lembaga berdasarkan nomor tes (lebih akurat)
+  const isSMPFromNoTes = student.noTes.toUpperCase().startsWith('SMP');
+  const isSMAFromNoTes = student.noTes.toUpperCase().startsWith('SMA');
+
+  // Prioritaskan deteksi dari nomor tes, fallback ke data lembaga
+  let isSMP: boolean;
+  if (isSMPFromNoTes) {
+    isSMP = true;
+  } else if (isSMAFromNoTes) {
+    isSMP = false;
+  } else {
+    // Fallback ke data lembaga jika nomor tes tidak jelas
+    isSMP = lembaga?.id === 'smp';
+  }
+
+  const lembagaText = isSMP ? 'SMP' : 'SMA';
+  const lembagaCode = isSMP ? 'SMPITA' : 'SMAITA';
+
+  // Data kepala sekolah
+  const kepalaSekolah = isSMP
+    ? { nama: 'Meditoma, S.Pd.', niy: '199405220720181024' }
+    : { nama: 'Delly Arhadath, S.Pd.', niy: '200001120120231160' };
+
+  // Status asrama dari data form siswa
+  const isAsrama = student.data.asrama === 'ASRAMA';
+
+  // Generate nomor surat berdasarkan nomor tes siswa
+  const generateNomorSurat = () => {
+    const today = new Date();
+    const bulan = String(today.getMonth() + 1).padStart(2, '0');
+    const tahun = today.getFullYear();
+
+    // Ekstrak nomor dari noTes siswa (contoh: SMP-2627-020 -> 020)
+    let nomorUrut = '001'; // default fallback
+
+    const nomorTesMatch = student.noTes.match(/-(\d+)$/);
+    if (nomorTesMatch && nomorTesMatch[1]) {
+      nomorUrut = nomorTesMatch[1].padStart(3, '0'); // pastikan 3 digit
+    } else {
+      // Fallback: gunakan timestamp untuk uniqueness
+      const timestamp = Date.now().toString().slice(-3);
+      nomorUrut = timestamp.padStart(3, '0');
+    }
+
+    return `${nomorUrut}/SLP/${lembagaCode}/${bulan}/${tahun}`;
+  };
+
+  // Generate tanggal surat
+  const tanggalSurat = formatTanggal(new Date().toISOString());
+
+  // Set font
+  doc.setFont('helvetica');
+
+
+
+  // Header - Kop Surat dengan Logo
+
+  // Logo Kiri - Ponpes Islamic Centre At-Tauhid (geser lebih ke kiri)
+  addLogoPDF(doc, LOGO_PONPES_ICT, 15, 13, 'PONPES');
+
+  // Logo Kanan - Berdasarkan deteksi lembaga yang sudah diperbaiki
+  const rightLogo = isSMP ? LOGO_SMP_ATTAUHID : LOGO_SMA_ATTAUHID;
+  const rightLogoType = isSMP ? 'SMP' : 'SMA';
+  addLogoPDF(doc, rightLogo, 171, 13, rightLogoType);
+
+  // Teks Header
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text('PONDOK PESANTREN', 105, 15, { align: 'center' });
+  doc.text('ISLAMIC CENTRE AT-TAUHID BANGKA BELITUNG', 105, 22, { align: 'center' });
+  doc.text(`${lembagaCode} AT-TAUHID PANGKALPINANG`, 105, 29, { align: 'center' });
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text('NOMOR POKOK SEKOLAH NASIONAL (NPSN) : 70044522', 105, 36, { align: 'center' });
+
+  doc.setFontSize(9);
+  doc.text('Jl. Gerunggang RT 08 RW 03 Kel. Gerunggang Kec. Kepala Tujuh, Kec. Gerunggang, Prov. Bangka Belitung', 105, 42, { align: 'center' });
+  doc.text('Telp. 0812-9738-5207 E-mail : attauhidsmatta@gmail.com', 105, 47, { align: 'center' });
+
+  // Garis pemisah
+  doc.setLineWidth(1);
+  doc.line(20, 52, 190, 52);
+  doc.setLineWidth(0.5);
+  doc.line(20, 54, 190, 54);
+
+  // Judul Surat
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('SURAT KETERANGAN TES SPMB 2026/2027', 105, 65, { align: 'center' });
+
+  doc.setFontSize(12);
+  doc.text(`Nomor : ${generateNomorSurat()}`, 105, 73, { align: 'center' });
+
+  // Pembukaan surat
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  let yPos = 85;
+
+  const pembukaan = [
+    `Yang bertanda tangan di bawah ini, Kepala ${lembagaText} Islam Tahfizh Al-Qur'an At-Tauhid`,
+    'Pangkalpinang Nomor Pokok Sekolah Nasional (NPSN) 70044522 Provinsi Bangka',
+    'Belitung, menerangkan bahwa:'
+  ];
+
+  pembukaan.forEach(line => {
+    doc.text(line, 20, yPos);
+    yPos += 6;
+  });
+
+  yPos += 5;
+
+  // Data siswa
+  const statusAsrama = isAsrama ? 'Asrama' : 'Non Asrama';
+  const dataLines = [
+    { label: 'Nama', value: ': ' + student.data.namaSiswa },
+    { label: 'Jenis Kelamin', value: ': ' + (student.data.jenisKelamin || '-') },
+    { label: 'NIK', value: ': ' + (student.data.nik || '-') },
+    { label: 'Tempat, Tgl. Lahir', value: ': ' + (student.data.tempatLahir || '-') + ', ' + (student.data.tanggalLahir ? formatTanggal(student.data.tanggalLahir) : '-') },
+    { label: 'Nama Orangtua', value: ': ' + student.data.namaOrangTua },
+    { label: 'Nomor Tes', value: ': ' + student.noTes },
+    { label: 'Keterangan', value: ': ' + statusAsrama }
+  ];
+
+  const labelWidth = 50;
+
+  dataLines.forEach(item => {
+    doc.text(item.label.padEnd(35), 20, yPos);
+    doc.text(item.value, 20 + labelWidth, yPos);
+    yPos += 6;
+  });
+
+  yPos += 5;
+
+  // Pernyataan kelulusan
+  const statusText = student.kelulusan === 'LULUS' ? 'LULUS' : 'TIDAK LULUS';
+  doc.text(`dinyatakan ${statusText} dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.`, 20, yPos);
+  yPos += 10;
+
+  // Informasi pembayaran (hanya jika lulus)
+  if (student.kelulusan === 'LULUS') {
+    doc.text('Mohon untuk segera melakukan pembayaran dengan ketentuan :', 20, yPos);
+    yPos += 8;
+
+    const pembayaranInfo = [
+      'Prosedur daftar ulang adalah dengan membayar kewajiban Uang Pangkal sekurang',
+      'kurangnya 50% dari total uang pangkal ditambah SPP Juli 2026 paling lambat 14 hari',
+      'setelah surat ini diterbitkan dan sisanya dilunasi paling lambat 1 bulan setelahnya.'
+    ];
+
+    pembayaranInfo.forEach(line => {
+      doc.text(line, 20, yPos);
+      yPos += 6;
+    });
+
+    yPos += 5;
+
+    // Biaya berdasarkan asrama/non asrama
+    const uangPangkal = isAsrama ? 'Rp. 12.800.000,-' : 'Rp. 9.800.000,-';
+    const spp = isAsrama ? 'Rp. 1.300.000,-' : 'Rp. 450.000,-';
+
+    doc.text(`Kewajiban Uang Pangkal         : ${uangPangkal}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Kewajiban SPP                            : ${spp}`, 20, yPos);
+    yPos += 15;
+  } else {
+    yPos += 20;
+  }
+
+  // Penutup dan tanda tangan
+  doc.text(`Pangkalpinang, ${tanggalSurat}`, 130, yPos);
+  yPos += 10;
+
+  doc.text('Kepala Sekolah,', 130, yPos);
+  yPos += 30;
+
+  doc.text(kepalaSekolah.nama, 130, yPos);
+  yPos += 6;
+  doc.text(`NIY. ${kepalaSekolah.niy}`, 130, yPos);
+  yPos += 15;
+
+  // Tembusan
+  doc.setFontSize(10);
+  doc.text('Tembusan :', 20, yPos);
+  yPos += 5;
+
+  const tembusan = [
+    'Ketua Panitia PPDB Tahun Ajaran 2026/2027',
+    'Staf Administrasi Sistem Yayasan',
+    'Staf Keuangan Yayasan'
+  ];
+
+  tembusan.forEach(item => {
+    doc.text('- ' + item, 25, yPos);
+    yPos += 5;
+  });
+
+  return doc;
+};
+
+export const downloadSuratKeterangan = (student: Student) => {
+  const doc = generateSuratKeteranganPDF(student);
+  const filename = `Surat_Keterangan_${student.noTes}_${student.data.namaSiswa.replace(/\s+/g, '_')}.pdf`;
+  doc.save(filename);
+};
+
+export const getSuratKeteranganBlob = (student: Student): Blob => {
+  const doc = generateSuratKeteranganPDF(student);
+  return doc.output('blob');
+};
