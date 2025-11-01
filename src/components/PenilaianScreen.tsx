@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Check, Users, User } from 'lucide-react';
+import { ChevronLeft, Check, Users, User, ChevronDown } from 'lucide-react';
 import { Student, PenilaianScores, PenilaianData } from '../types';
 import RubricGuide from './RubricGuide';
 import { calculateKelulusan } from '../utils/helpers';
@@ -44,7 +44,29 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
 }) => {
   const [showGuideAnak, setShowGuideAnak] = useState(false);
   const [showGuideOrtu, setShowGuideOrtu] = useState(false);
+  const [expandedAnakItems, setExpandedAnakItems] = useState<Set<number>>(new Set());
+  const [expandedOrtuItems, setExpandedOrtuItems] = useState<Set<number>>(new Set());
   const hasil = calculateKelulusan(penilaianAnak, penilaianOrtu, mathCorrect, hafalanBenar);
+
+  const toggleAnakItem = (index: number) => {
+    const newExpanded = new Set(expandedAnakItems);
+    if (newExpanded.has(index)) {
+      newExpanded.delete(index);
+    } else {
+      newExpanded.add(index);
+    }
+    setExpandedAnakItems(newExpanded);
+  };
+
+  const toggleOrtuItem = (index: number) => {
+    const newExpanded = new Set(expandedOrtuItems);
+    if (newExpanded.has(index)) {
+      newExpanded.delete(index);
+    } else {
+      newExpanded.add(index);
+    }
+    setExpandedOrtuItems(newExpanded);
+  };
 
   const levelTooltip = [
     'Definisi Level (umum)',
@@ -163,14 +185,31 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           <div className="space-y-4">
             {penilaian.anak.map((item, index) => (
               <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                <div className="mb-3">
-                  <p
-                    className="text-sm font-medium text-gray-700"
-                    title={rubrikSantri[item] || 'Skor 1-5: 1 sangat kurang • 5 sangat baik'}
-                  >
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-sm font-medium text-gray-700">
                     {index + 1}. {item}
                   </p>
+                  {rubrikSantri[item] && (
+                    <button
+                      onClick={() => toggleAnakItem(index)}
+                      className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+                      title="Lihat indikator penilaian"
+                    >
+                      <ChevronDown 
+                        className={`w-4 h-4 text-gray-600 transition-transform ${
+                          expandedAnakItems.has(index) ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </button>
+                  )}
                 </div>
+                {expandedAnakItems.has(index) && rubrikSantri[item] && (
+                  <div className="mb-3 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
+                    <p className="text-xs text-blue-800 font-medium">
+                      {rubrikSantri[item]}
+                    </p>
+                  </div>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {[1, 2, 3, 4, 5].map((score) => (
                     <label
@@ -223,14 +262,31 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           <div className="space-y-4">
             {penilaian.ortu.map((item, index) => (
               <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                <div className="mb-3">
-                  <p
-                    className="text-sm font-medium text-gray-700"
-                    title={rubrikOrtu[item] || 'Skor 1-5: 1 sangat kurang • 5 sangat baik'}
-                  >
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-sm font-medium text-gray-700">
                     {index + 1}. {item}
                   </p>
+                  {rubrikOrtu[item] && (
+                    <button
+                      onClick={() => toggleOrtuItem(index)}
+                      className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+                      title="Lihat indikator penilaian"
+                    >
+                      <ChevronDown 
+                        className={`w-4 h-4 text-gray-600 transition-transform ${
+                          expandedOrtuItems.has(index) ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </button>
+                  )}
                 </div>
+                {expandedOrtuItems.has(index) && rubrikOrtu[item] && (
+                  <div className="mb-3 p-3 bg-purple-50 border-l-4 border-purple-400 rounded-r-lg">
+                    <p className="text-xs text-purple-800 font-medium">
+                      {rubrikOrtu[item]}
+                    </p>
+                  </div>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {[1, 2, 3, 4, 5].map((score) => (
                     <label
