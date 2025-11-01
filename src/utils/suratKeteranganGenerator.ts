@@ -160,32 +160,36 @@ export const generateSuratKeteranganPDF = (student: Student): jsPDF => {
 
   yPos += 4; // Kurangi dari 5 ke 4
 
-  // Pernyataan kelulusan
-  const statusText = student.kelulusan === 'LULUS' ? 'LULUS' : 'TIDAK LULUS';
-  doc.text(`dinyatakan ${statusText} dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.`, 20, yPos);
-  yPos += 8; // Kurangi dari 10 ke 8
-
-  // Informasi pembayaran
+  // Pernyataan kelulusan dan informasi pembayaran
   if (student.kelulusan === 'LULUS') {
-    doc.text('Mohon untuk segera melakukan pembayaran dengan ketentuan :', 20, yPos);
-    yPos += 8;
-
-    const pembayaranInfo = [
-      'Prosedur daftar ulang adalah dengan membayar kewajiban Uang Pangkal sekurang',
-      'kurangnya 50% dari total uang pangkal ditambah SPP Juli 2026 paling lambat 14 hari',
-      'setelah surat ini diterbitkan dan sisanya dilunasi paling lambat 1 bulan setelahnya.'
+    // Redaksi yang benar untuk siswa lulus
+    const redaksiLulus = [
+      'dinyatakan LULUS dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.',
+      'Mohon untuk segera melakukan pembayaran dengan ketentuan : Prosedur daftar ulang adalah',
+      'dengan membayar kewajiban Uang Pangkal sekurang kurangnya 50% dari total uang pangkal',
+      'ditambah SPP Juli 2026 paling lambat 14 hari setelah surat ini diterbitkan dan sisanya',
+      'dilunasi paling lambat 1 bulan setelahnya.'
     ];
 
-    pembayaranInfo.forEach(line => {
+    redaksiLulus.forEach(line => {
       doc.text(line, 20, yPos);
       yPos += 6;
     });
 
     yPos += 8;
   } else if (student.kelulusan === 'TIDAK LULUS') {
-    doc.text('Karena dinyatakan tidak lulus, tidak ada kewajiban pembayaran untuk tahun ini.', 20, yPos);
-    yPos += 6;
-    doc.text('Untuk informasi biaya jika ingin mendaftar ulang tahun depan, silakan hubungi panitia.', 20, yPos);
+    // Redaksi untuk siswa tidak lulus
+    const redaksiTidakLulus = [
+      'dinyatakan TIDAK LULUS dari tes seleksi penerimaan peserta didik baru Tahun Ajaran 2026/2027.',
+      'Karena dinyatakan tidak lulus, tidak ada kewajiban pembayaran untuk tahun ini.',
+      'Untuk informasi biaya jika ingin mendaftar ulang tahun depan, silakan hubungi panitia.'
+    ];
+
+    redaksiTidakLulus.forEach(line => {
+      doc.text(line, 20, yPos);
+      yPos += 6;
+    });
+
     yPos += 8;
   } else {
     // Belum ada status kelulusan
