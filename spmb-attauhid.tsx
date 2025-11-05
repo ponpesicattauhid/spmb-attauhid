@@ -19,6 +19,9 @@ const App = () => {
     penilaianOrtu,
     mathCorrect,
     hafalanBenar,
+    riwayatPenyakit,
+    pekerjaanOrangTua,
+    catatanPenguji,
     editingId,
     filterLembaga,
     searchQuery,
@@ -37,7 +40,10 @@ const App = () => {
     handlePenilaianAnakChange,
     handlePenilaianOrtuChange,
     handleMathCorrectChange,
-    handleHafalanBenarChange
+    handleHafalanBenarChange,
+    handleRiwayatPenyakitChange,
+    handlePekerjaanOrangTuaChange,
+    handleCatatanPengujiChange
   } = useStudentData();
 
   const filteredStudents = getFilteredStudents(
@@ -100,12 +106,18 @@ const App = () => {
         penilaianOrtu={penilaianOrtu}
         mathCorrect={mathCorrect}
         hafalanBenar={hafalanBenar}
+        riwayatPenyakit={riwayatPenyakit}
+        pekerjaanOrangTua={pekerjaanOrangTua}
+        catatanPenguji={catatanPenguji}
         onBack={() => setView('dashboard')}
         onSave={handleSavePenilaian}
         onPenilaianAnakChange={handlePenilaianAnakChange}
         onPenilaianOrtuChange={handlePenilaianOrtuChange}
         onMathCorrectChange={handleMathCorrectChange}
         onHafalanBenarChange={handleHafalanBenarChange}
+        onRiwayatPenyakitChange={handleRiwayatPenyakitChange}
+        onPekerjaanOrangTuaChange={handlePekerjaanOrangTuaChange}
+        onCatatanPengujiChange={handleCatatanPengujiChange}
       />
     );
   }

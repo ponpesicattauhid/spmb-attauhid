@@ -20,6 +20,7 @@ export const useStudentData = (currentUser: User | null = null) => {
   const [hafalanBenar, setHafalanBenar] = useState<number>(0);
   const [riwayatPenyakit, setRiwayatPenyakit] = useState<string>('');
   const [pekerjaanOrangTua, setPekerjaanOrangTua] = useState<string>('');
+  const [catatanPenguji, setCatatanPenguji] = useState<string>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [filterLembaga, setFilterLembaga] = useState<string>('ALL');
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
@@ -306,6 +307,9 @@ export const useStudentData = (currentUser: User | null = null) => {
     setPenilaianOrtu(defaultOrtu);
     setMathCorrect(student.mathCorrect || 0);
     setHafalanBenar(student.hafalanBenar || 0);
+    setRiwayatPenyakit(student.riwayatPenyakit || '');
+    setPekerjaanOrangTua(student.pekerjaanOrangTua || '');
+    setCatatanPenguji(student.catatanPenguji || '');
   };
 
   const handleSavePenilaian = async () => {
@@ -329,6 +333,9 @@ export const useStudentData = (currentUser: User | null = null) => {
         penilaianOrtu,
         mathCorrect,
         hafalanBenar,
+        riwayatPenyakit,
+        pekerjaanOrangTua,
+        catatanPenguji,
         nilaiAkhir: finalScoreInt,
         kelulusan: status,
         status: 'SUDAH DIUJI' as const,
@@ -342,6 +349,9 @@ export const useStudentData = (currentUser: User | null = null) => {
           penilaianOrtu,
           mathCorrect,
           hafalanBenar,
+          riwayatPenyakit,
+          pekerjaanOrangTua,
+          catatanPenguji,
           nilaiAkhir: finalScoreInt,
           kelulusan: status,
           status: 'SUDAH DIUJI',
@@ -462,6 +472,10 @@ export const useStudentData = (currentUser: User | null = null) => {
     setPekerjaanOrangTua(value);
   };
 
+  const handleCatatanPengujiChange = (value: string) => {
+    setCatatanPenguji(value);
+  };
+
   const resetForm = () => {
     setFormData(getInitialFormData());
     setPenilaianAnak({});
@@ -470,6 +484,7 @@ export const useStudentData = (currentUser: User | null = null) => {
     setHafalanBenar(0);
     setRiwayatPenyakit('');
     setPekerjaanOrangTua('');
+    setCatatanPenguji('');
     setEditingId(null);
   };
 
@@ -485,6 +500,7 @@ export const useStudentData = (currentUser: User | null = null) => {
     hafalanBenar,
     riwayatPenyakit,
     pekerjaanOrangTua,
+    catatanPenguji,
     editingId,
     filterLembaga,
     filterStatus,
@@ -510,6 +526,7 @@ export const useStudentData = (currentUser: User | null = null) => {
     handleMathCorrectChange,
     handleHafalanBenarChange,
     handleRiwayatPenyakitChange,
-    handlePekerjaanOrangTuaChange
+    handlePekerjaanOrangTuaChange,
+    handleCatatanPengujiChange
   };
 };

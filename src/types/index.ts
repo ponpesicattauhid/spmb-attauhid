@@ -73,6 +73,7 @@ export interface Student {
   // Text area untuk informasi tambahan
   riwayatPenyakit?: string;
   pekerjaanOrangTua?: string;
+  catatanPenguji?: string;
   createdAt: string;
 }
 

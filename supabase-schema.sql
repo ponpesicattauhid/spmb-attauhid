@@ -108,6 +108,10 @@ ALTER TABLE students ADD COLUMN IF NOT EXISTS "nilaiAkhir" INTEGER DEFAULT 0;
 ALTER TABLE students ADD COLUMN IF NOT EXISTS "kelulusan" TEXT;
 ALTER TABLE students ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW();
 ALTER TABLE students ADD COLUMN IF NOT EXISTS "penguji" TEXT;
+-- Kolom informasi tambahan
+ALTER TABLE students ADD COLUMN IF NOT EXISTS "riwayatPenyakit" TEXT;
+ALTER TABLE students ADD COLUMN IF NOT EXISTS "pekerjaanOrangTua" TEXT;
+ALTER TABLE students ADD COLUMN IF NOT EXISTS "catatanPenguji" TEXT;
 -- Perbarui constraint status untuk mendukung nilai baru (BELUM DIUJI/SUDAH DIUJI)
 DO $$
 BEGIN

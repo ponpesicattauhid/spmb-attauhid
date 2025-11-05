@@ -20,8 +20,10 @@ interface PenilaianScreenProps {
   onHafalanBenarChange?: (value: number) => void;
   riwayatPenyakit?: string;
   pekerjaanOrangTua?: string;
+  catatanPenguji?: string;
   onRiwayatPenyakitChange?: (value: string) => void;
   onPekerjaanOrangTuaChange?: (value: string) => void;
+  onCatatanPengujiChange?: (value: string) => void;
 }
 
 const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
@@ -39,8 +41,10 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
   onHafalanBenarChange,
   riwayatPenyakit = '',
   pekerjaanOrangTua = '',
+  catatanPenguji = '',
   onRiwayatPenyakitChange,
-  onPekerjaanOrangTuaChange
+  onPekerjaanOrangTuaChange,
+  onCatatanPengujiChange
 }) => {
   const [showGuideAnak, setShowGuideAnak] = useState(false);
   const [showGuideOrtu, setShowGuideOrtu] = useState(false);
@@ -377,7 +381,7 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           </div>
 
           {/* Pekerjaan Orang Tua */}
-          <div>
+          <div className="mb-6">
             <label className="block text-sm font-bold text-gray-700 mb-2">
               Pekerjaan Orang Tua
             </label>
@@ -388,6 +392,21 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
               className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
               rows={3}
               aria-label="Pekerjaan orang tua"
+            />
+          </div>
+
+          {/* Catatan Penguji */}
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-2">
+              Catatan Penguji
+            </label>
+            <textarea
+              value={catatanPenguji}
+              onChange={(e) => onCatatanPengujiChange?.(e.target.value)}
+              placeholder="Catatan khusus dari penguji mengenai calon santri dan orang tua..."
+              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-green-100 focus:border-green-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
+              rows={4}
+              aria-label="Catatan penguji"
             />
           </div>
         </div>
