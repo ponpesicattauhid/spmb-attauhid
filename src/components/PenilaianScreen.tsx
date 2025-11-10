@@ -401,12 +401,16 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
               Catatan Penguji
             </label>
             <textarea
-              value={catatanPenguji}
-              onChange={(e) => onCatatanPengujiChange?.(e.target.value)}
+              value={catatanPenguji || ''}
+              onChange={(e) => {
+                console.log('Catatan Penguji changed:', e.target.value);
+                onCatatanPengujiChange?.(e.target.value);
+              }}
               placeholder="Catatan khusus dari penguji mengenai calon santri dan orang tua..."
               className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-green-100 focus:border-green-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
               rows={4}
               aria-label="Catatan penguji"
+              disabled={false}
             />
           </div>
         </div>
