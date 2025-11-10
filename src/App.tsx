@@ -60,10 +60,12 @@ const App = () => {
     hafalanBenar,
     riwayatPenyakit,
     pekerjaanOrangTua,
+    catatanPenguji,
     handleMathCorrectChange,
     handleHafalanBenarChange,
     handleRiwayatPenyakitChange,
-    handlePekerjaanOrangTuaChange
+    handlePekerjaanOrangTuaChange,
+    handleCatatanPengujiChange
   } = useStudentData(currentUser);
 
   const handleLogin = (username: string, password: string) => {
@@ -249,6 +251,7 @@ const App = () => {
           hafalanBenar={hafalanBenar}
           riwayatPenyakit={riwayatPenyakit}
           pekerjaanOrangTua={pekerjaanOrangTua}
+          catatanPenguji={catatanPenguji}
           onBack={() => setView('dashboard')}
           onSave={() => {
             handleSavePenilaian();
@@ -260,6 +263,7 @@ const App = () => {
           onHafalanBenarChange={handleHafalanBenarChange}
           onRiwayatPenyakitChange={handleRiwayatPenyakitChange}
           onPekerjaanOrangTuaChange={handlePekerjaanOrangTuaChange}
+          onCatatanPengujiChange={handleCatatanPengujiChange}
         />
         {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       </>
