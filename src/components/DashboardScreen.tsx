@@ -299,6 +299,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                 <option value="BELUM DIUJI">🔴 Belum Diuji</option>
                 <option value="SUDAH DIUJI">🟡 Sudah Diuji</option>
                 <option value="LULUS">🟢 Lulus</option>
+                <option value="CADANGAN">🟠 Cadangan</option>
                 <option value="TIDAK LULUS">🔴 Tidak Lulus</option>
               </select>
             </div>
@@ -344,14 +345,28 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                             <h3 className="font-black text-gray-800 text-xl mb-1">{student.data.namaSiswa}</h3>
                             <p className="text-sm text-gray-600 font-medium">👨‍👩‍👦 {student.data.namaOrangTua}</p>
                           </div>
-                          <span className={`px-4 py-2 rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 ${
-                            student.status === 'SUDAH DIUJI' 
-                              ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
-                              : 'bg-gradient-to-r from-orange-500 to-amber-500 text-white'
-                          }`}>
-                            {student.status === 'SUDAH DIUJI' ? '✓' : '○'}
-                            {student.status}
-                          </span>
+                          <div className="flex flex-col gap-2 items-end">
+                            <span className={`px-4 py-2 rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 ${
+                              student.status === 'SUDAH DIUJI' 
+                                ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
+                                : 'bg-gradient-to-r from-orange-500 to-amber-500 text-white'
+                            }`}>
+                              {student.status === 'SUDAH DIUJI' ? '✓' : '○'}
+                              {student.status}
+                            </span>
+                            {student.status === 'SUDAH DIUJI' && student.kelulusan && (
+                              <span className={`px-4 py-2 rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 ${
+                                student.kelulusan === 'LULUS' 
+                                  ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white' 
+                                  : student.kelulusan === 'CADANGAN'
+                                  ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white'
+                                  : 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
+                              }`}>
+                                {student.kelulusan === 'LULUS' ? '✓' : student.kelulusan === 'CADANGAN' ? '⚠' : '✗'}
+                                {student.kelulusan}
+                              </span>
+                            )}
+                          </div>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600 mb-3">
@@ -385,13 +400,21 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
                           )}
                         </div>
 
-                        {/* Informasi Penguji */}
-                        {student.status === 'SUDAH DIUJI' && student.penguji && (
-                          <div className="mb-3">
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <UserCheck className="w-4 h-4 text-blue-600" />
-                              <span className="font-medium">Diuji oleh: <span className="text-blue-600 font-bold">{student.penguji}</span></span>
-                            </div>
+                        {/* Informasi Penguji dan Nilai */}
+                        {student.status === 'SUDAH DIUJI' && (
+                          <div className="mb-3 space-y-2">
+                            {student.penguji && (
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <UserCheck className="w-4 h-4 text-blue-600" />
+                                <span className="font-medium">Diuji oleh: <span className="text-blue-600 font-bold">{student.penguji}</span></span>
+                              </div>
+                            )}
+                            {student.nilaiAkhir !== undefined && (
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <FileText className="w-4 h-4 text-purple-600" />
+                                <span className="font-medium">Nilai Akhir: <span className="text-purple-600 font-bold">{student.nilaiAkhir}</span></span>
+                              </div>
+                            )}
                           </div>
                         )}
 

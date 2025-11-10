@@ -220,7 +220,7 @@ export const getFilteredStudents = (
   }
 
   if (filterStatus !== 'ALL') {
-    if (filterStatus === 'LULUS' || filterStatus === 'TIDAK LULUS') {
+    if (filterStatus === 'LULUS' || filterStatus === 'CADANGAN' || filterStatus === 'TIDAK LULUS') {
       filtered = filtered.filter(s => s.kelulusan === filterStatus);
     } else if (filterStatus === 'SUDAH DIUJI') {
       filtered = filtered.filter(s => s.status === 'SUDAH DIUJI');
