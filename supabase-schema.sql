@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS students (
   "mathCorrect" INTEGER DEFAULT 0,
   "hafalanBenar" INTEGER DEFAULT 0,
   "nilaiAkhir" INTEGER DEFAULT 0,
-  "kelulusan" TEXT CHECK ("kelulusan" IN ('LULUS', 'TIDAK LULUS')),
+  "kelulusan" TEXT CHECK ("kelulusan" IN ('LULUS', 'CADANGAN', 'TIDAK LULUS')),
   status TEXT NOT NULL CHECK (status IN ('BELUM DIUJI', 'SUDAH DIUJI')),
   penguji TEXT,
   "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW()

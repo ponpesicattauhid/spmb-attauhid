@@ -448,6 +448,8 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
           <div className={`p-6 rounded-2xl border-4 flex items-center justify-between shadow-xl ${
             hasil.status === 'LULUS' 
               ? 'bg-gradient-to-r from-emerald-100 to-green-100 border-emerald-400' 
+              : hasil.status === 'CADANGAN'
+              ? 'bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400'
               : 'bg-gradient-to-r from-red-100 to-pink-100 border-red-400'
           }`}>
             <div>
@@ -457,9 +459,11 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
             <div className={`text-3xl font-black px-6 py-3 rounded-2xl shadow-lg ${
               hasil.status === 'LULUS' 
                 ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white' 
+                : hasil.status === 'CADANGAN'
+                ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white'
                 : 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
             }`}>
-              {hasil.status === 'LULUS' ? '✓ LULUS' : '✗ ' + hasil.status}
+              {hasil.status === 'LULUS' ? '✓ LULUS' : hasil.status === 'CADANGAN' ? '⚠ CADANGAN' : '✗ TIDAK LULUS'}
             </div>
           </div>
         </div>

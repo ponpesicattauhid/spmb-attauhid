@@ -304,7 +304,16 @@ export const calculateKelulusan = (
   }
 
   const finalScore = Math.round(finalScoreRaw * 100) / 100; // 2 decimal places
-  const status: KelulusanStatus = finalScore >= 70 ? 'LULUS' : 'TIDAK LULUS';
+  
+  // Tentukan status berdasarkan nilai akhir
+  let status: KelulusanStatus;
+  if (finalScore >= 70) {
+    status = 'LULUS';
+  } else if (finalScore >= 60) {
+    status = 'CADANGAN';
+  } else {
+    status = 'TIDAK LULUS';
+  }
 
   return {
     finalScore,

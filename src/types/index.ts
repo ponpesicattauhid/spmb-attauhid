@@ -5,7 +5,7 @@ export type UserRole = 'TU' | 'PENGUJI' | 'ADMIN' | null;
 export type View = 'login' | 'dashboard' | 'form' | 'penilaian' | 'detail' | 'admin';
 
 export type StudentStatus = 'BELUM DIUJI' | 'SUDAH DIUJI';
-export type KelulusanStatus = 'LULUS' | 'TIDAK LULUS';
+export type KelulusanStatus = 'LULUS' | 'CADANGAN' | 'TIDAK LULUS';
 
 export interface FormData {
   namaOrangTua: string;
