@@ -374,7 +374,7 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
               value={riwayatPenyakit}
               onChange={(e) => onRiwayatPenyakitChange?.(e.target.value)}
               placeholder="Catatan riwayat penyakit, alergi, atau kondisi kesehatan khusus..."
-              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-red-100 focus:border-red-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
+              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-red-100 focus:border-red-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none text-gray-900"
               rows={3}
               aria-label="Riwayat penyakit calon santri"
             />
@@ -389,7 +389,7 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
               value={pekerjaanOrangTua}
               onChange={(e) => onPekerjaanOrangTuaChange?.(e.target.value)}
               placeholder="Jabatan, perusahaan, atau bidang pekerjaan orang tua..."
-              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
+              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none text-gray-900"
               rows={3}
               aria-label="Pekerjaan orang tua"
             />
@@ -404,7 +404,7 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
               value={catatanPenguji || ''}
               onChange={(e) => onCatatanPengujiChange?.(e.target.value)}
               placeholder="Catatan khusus dari penguji mengenai calon santri dan orang tua..."
-              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-green-100 focus:border-green-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none"
+              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-green-100 focus:border-green-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none text-gray-900"
               rows={4}
               aria-label="Catatan penguji"
             />
