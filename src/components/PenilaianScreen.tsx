@@ -402,16 +402,7 @@ const PenilaianScreen: React.FC<PenilaianScreenProps> = ({
             </label>
             <textarea
               value={catatanPenguji || ''}
-              onChange={(e) => {
-                console.log('Catatan Penguji onChange triggered:', e.target.value);
-                console.log('Handler exists:', !!onCatatanPengujiChange);
-                if (onCatatanPengujiChange) {
-                  onCatatanPengujiChange(e.target.value);
-                }
-              }}
-              onClick={() => console.log('Textarea clicked!')}
-              onFocus={() => console.log('Textarea focused!')}
-              onKeyDown={(e) => console.log('Key pressed:', e.key)}
+              onChange={(e) => onCatatanPengujiChange?.(e.target.value)}
               placeholder="Catatan khusus dari penguji mengenai calon santri dan orang tua..."
               className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-green-100 focus:border-green-400 transition-all bg-white/50 backdrop-blur-sm font-medium resize-none text-gray-900"
               rows={4}

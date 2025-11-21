@@ -27,6 +27,7 @@ export const exportToExcel = (students: Student[], lembagaData: LembagaData[]) =
         'Kelulusan': student.kelulusan || '-',
         'Riwayat Penyakit': student.riwayatPenyakit || '-',
         'Pekerjaan Orang Tua': student.pekerjaanOrangTua || '-',
+        'Catatan Penguji': student.catatanPenguji || '-',
         'Status Asrama': student.data.asrama || '-',
         'Petugas TU': student.data.petugas || '-'
       };
@@ -53,8 +54,9 @@ export const exportToExcel = (students: Student[], lembagaData: LembagaData[]) =
       { wch: 12 }, // Kelulusan
       { wch: 30 }, // Riwayat Penyakit
       { wch: 25 }, // Pekerjaan Orang Tua
-      { wch: 20 }, // Petugas TU
-      { wch: 20 }  // Petugas Cadangan
+      { wch: 40 }, // Catatan Penguji
+      { wch: 15 }, // Status Asrama
+      { wch: 20 }  // Petugas TU
     ];
     worksheet['!cols'] = columnWidths;
 
@@ -523,11 +525,11 @@ export const exportStudentToPDF = async (student: Student, lembagaData: LembagaD
       const detailData = [];
       
       if (student.mathCorrect !== undefined) {
-        detailData.push({ label: 'Nilai Matematika', value: student.mathCorrect.toString() });
+        detailData.push({ label: 'Nilai Matematika', value: `${student.mathCorrect} dari 5 soal` });
       }
       
       if (student.hafalanBenar !== undefined) {
-        detailData.push({ label: 'Nilai Hafalan', value: student.hafalanBenar.toString() });
+        detailData.push({ label: 'Nilai Hafalan', value: `${student.hafalanBenar} dari 15 baris` });
       }
       
       if (student.penilaianAnak) {
@@ -551,6 +553,62 @@ export const exportStudentToPDF = async (student: Student, lembagaData: LembagaD
       });
 
       yPos += 5;
+    }
+
+    // ===== INFORMASI TAMBAHAN =====
+    if (student.riwayatPenyakit || student.pekerjaanOrangTua || student.catatanPenguji) {
+      // Check if we need a new page
+      if (yPos > pageHeight - 80) {
+        pdf.addPage();
+        yPos = 20;
+      }
+
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFillColor(239, 246, 255);
+      pdf.rect(20, yPos, pageWidth - 40, 10, 'F');
+      
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(12);
+      pdf.setTextColor(37, 99, 235);
+      pdf.text('INFORMASI TAMBAHAN', 25, yPos + 7);
+      yPos += 15;
+
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10);
+
+      if (student.riwayatPenyakit) {
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Riwayat Penyakit:', labelX, yPos);
+        yPos += 6;
+        
+        pdf.setFont('helvetica', 'normal');
+        const riwayatLines = pdf.splitTextToSize(student.riwayatPenyakit, pageWidth - 50);
+        pdf.text(riwayatLines, labelX, yPos);
+        yPos += riwayatLines.length * 5 + 5;
+      }
+
+      if (student.pekerjaanOrangTua) {
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Pekerjaan Orang Tua:', labelX, yPos);
+        yPos += 6;
+        
+        pdf.setFont('helvetica', 'normal');
+        const pekerjaanLines = pdf.splitTextToSize(student.pekerjaanOrangTua, pageWidth - 50);
+        pdf.text(pekerjaanLines, labelX, yPos);
+        yPos += pekerjaanLines.length * 5 + 5;
+      }
+
+      if (student.catatanPenguji) {
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Catatan Penguji:', labelX, yPos);
+        yPos += 6;
+        
+        pdf.setFont('helvetica', 'normal');
+        const catatanLines = pdf.splitTextToSize(student.catatanPenguji, pageWidth - 50);
+        pdf.text(catatanLines, labelX, yPos);
+        yPos += catatanLines.length * 5 + 5;
+      }
     }
 
     // ===== FOOTER =====
