@@ -196,7 +196,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-5 rounded-2xl shadow-lg hover-lift transform transition-all">
               <div className="text-white/90 text-sm font-semibold mb-1">
                 {filterLembaga === 'ALL' ? 'Total Pendaftar' : `Pendaftar ${lembagaData.find(l => l.id === filterLembaga)?.name || 'Lembaga'}`}
@@ -231,6 +231,50 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
               </div>
               <div className="mt-2 h-1 bg-white/30 rounded-full overflow-hidden">
                 <div className="h-full bg-white/80 rounded-full transition-all" style={{ width: `${(filteredStudents.filter(s => s.data.tanggalTes === new Date().toISOString().split('T')[0]).length / Math.max(filteredStudents.length, 1)) * 100}%` }}></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Gender Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-5 rounded-2xl shadow-lg hover-lift transform transition-all">
+              <div className="text-white/90 text-sm font-semibold mb-1 flex items-center gap-2">
+                <span>👨</span> Laki-laki
+              </div>
+              <div className="text-3xl font-black text-white">
+                {filteredStudents.filter(s => s.data.jenisKelamin === 'Laki-laki').length}
+              </div>
+              <div className="mt-2 h-1 bg-white/30 rounded-full overflow-hidden">
+                <div className="h-full bg-white/80 rounded-full transition-all" style={{ width: `${(filteredStudents.filter(s => s.data.jenisKelamin === 'Laki-laki').length / Math.max(filteredStudents.length, 1)) * 100}%` }}></div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-pink-500 to-rose-600 p-5 rounded-2xl shadow-lg hover-lift transform transition-all">
+              <div className="text-white/90 text-sm font-semibold mb-1 flex items-center gap-2">
+                <span>👩</span> Perempuan
+              </div>
+              <div className="text-3xl font-black text-white">
+                {filteredStudents.filter(s => s.data.jenisKelamin === 'Perempuan').length}
+              </div>
+              <div className="mt-2 h-1 bg-white/30 rounded-full overflow-hidden">
+                <div className="h-full bg-white/80 rounded-full transition-all" style={{ width: `${(filteredStudents.filter(s => s.data.jenisKelamin === 'Perempuan').length / Math.max(filteredStudents.length, 1)) * 100}%` }}></div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-5 rounded-2xl shadow-lg hover-lift transform transition-all">
+              <div className="text-white/90 text-sm font-semibold mb-1">✅ Lulus</div>
+              <div className="text-3xl font-black text-white">
+                {filteredStudents.filter(s => s.kelulusan === 'LULUS').length}
+              </div>
+              <div className="mt-2 h-1 bg-white/30 rounded-full overflow-hidden">
+                <div className="h-full bg-white/80 rounded-full transition-all" style={{ width: `${(filteredStudents.filter(s => s.kelulusan === 'LULUS').length / Math.max(filteredStudents.length, 1)) * 100}%` }}></div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-red-500 to-rose-600 p-5 rounded-2xl shadow-lg hover-lift transform transition-all">
+              <div className="text-white/90 text-sm font-semibold mb-1">❌ Tidak Lulus</div>
+              <div className="text-3xl font-black text-white">
+                {filteredStudents.filter(s => s.kelulusan === 'TIDAK LULUS').length}
+              </div>
+              <div className="mt-2 h-1 bg-white/30 rounded-full overflow-hidden">
+                <div className="h-full bg-white/80 rounded-full transition-all" style={{ width: `${(filteredStudents.filter(s => s.kelulusan === 'TIDAK LULUS').length / Math.max(filteredStudents.length, 1)) * 100}%` }}></div>
               </div>
             </div>
           </div>
